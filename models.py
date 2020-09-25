@@ -22,19 +22,6 @@ counties = ('Q', 'M', 'R',
 counties_enum = Enum(*counties, name='county_enum')
 
 
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    email = Column(String)
-    hashed_password = Column(String)
-
-    items = relationship("Item", back_populates="owner")
-
-
 class School(Base):
     __tablename__ = "school"
 
@@ -42,6 +29,8 @@ class School(Base):
     district = Column(String)
     county = Column(counties_enum)
     name = Column(String)
+
+    students = relationship("Student", back_populates="school")
 
 
 class Student(Base):
@@ -54,7 +43,12 @@ class Student(Base):
     birthdate = Column(Date)
     grade = Column(String)
 
-    # TODO: realtioship school
+    school_id = Column(String, ForeignKey('school.id'))
+    school = relationship("School", back_populates="students")
+
+    ieps = relationship("Iep", back_populates="student")
+
+    caseloads = relationship("Caseloadee", back_populates="student")
 
 
 class Iep(Base):
@@ -63,7 +57,13 @@ class Iep(Base):
     id = Column(Integer, primary_key=True)
     start_date = Column(Date)
     end_date = Column(Date)
-    # TODO: realtioship student
+
+    student_id = Column(Integer, ForeignKey('student.id'))
+    student = relationship("Student", back_populates="ieps")
+
+    mandate = relationship('Mandate', back_populates='iep')
+
+    goal = relationship('Goal', back_populates='iep')
 
 
 class Mandate(Base):
@@ -77,6 +77,9 @@ class Mandate(Base):
     periodicity = Column(periodicity_enum)
     frequency = Column(Integer)
     interval = Column(Integer)
+
+    iep_id = Column(Integer, ForeignKey('iep.id'))
+    iep = relationship("Iep", back_populates="mandate")
 
     # TODO: realtioship iep
 
@@ -93,6 +96,24 @@ class Goal(Base):
 
     # TODO: relationship iep
 
+    iep_id = Column(Integer, ForeignKey('iep.id'))
+    iep = relationship("Iep", back_populates="goal")
+
+
+class User(Base):
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    email = Column(String)
+    hashed_password = Column(String)
+
+    role = relationship("Role", back_populates="user")
+
+    caseloads = relationship("Role", back_populates="user")
+
 
 class Role(Base):
     __tablename__ = 'role'
@@ -100,6 +121,9 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
 
     user_role = Column(role_enum)
+
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship("User", back_populates="role")
 
     # TODO: realtioship user
 
@@ -112,7 +136,10 @@ class Caseload(Base):
     title = Column(String)
     service = Column(service_enum)
 
-    # TODO: user realtiosnhip
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship("User", back_populates="caseload")
+
+    caseloads = relationship("Role", back_populates="user")
 
 
 class Caseloadee(Base):
@@ -120,5 +147,8 @@ class Caseloadee(Base):
 
     id = Column(Integer, primary_key=True)
 
-    # TODO: realtionship caseload
-    # TODO: realtionship student
+    caseload_id = Column(Integer, ForeignKey('caseload.id'))
+    caseload = relationship("Caseload", back_populates="caseloads")
+
+    student_id = Column(Integer, ForeignKey('student.id'))
+    student = relationship("School", back_populates="caseloads")
