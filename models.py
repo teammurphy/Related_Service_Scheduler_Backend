@@ -48,7 +48,7 @@ class Student(Base):
 
     ieps = relationship("Iep", back_populates="student")
 
-    caseloads = relationship("Caseloadee", back_populates="student")
+    caseloadees = relationship("Caseloadee", back_populates="student")
 
 
 class Iep(Base):
@@ -81,8 +81,6 @@ class Mandate(Base):
     iep_id = Column(Integer, ForeignKey('iep.id'))
     iep = relationship("Iep", back_populates="mandate")
 
-    # TODO: realtioship iep
-
 
 class Goal(Base):
     __tablename__ = 'goal'
@@ -94,8 +92,6 @@ class Goal(Base):
     method = Column(String)
     schedule = Column(String)
 
-    # TODO: relationship iep
-
     iep_id = Column(Integer, ForeignKey('iep.id'))
     iep = relationship("Iep", back_populates="goal")
 
@@ -104,6 +100,7 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
+
     username = Column(String, unique=True)
     first_name = Column(String)
     last_name = Column(String)
@@ -112,7 +109,7 @@ class User(Base):
 
     role = relationship("Role", back_populates="user")
 
-    caseloads = relationship("Role", back_populates="user")
+    caseloads = relationship("Caseload", back_populates="user")
 
 
 class Role(Base):
@@ -124,8 +121,6 @@ class Role(Base):
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", back_populates="role")
-
-    # TODO: realtioship user
 
 
 class Caseload(Base):
@@ -139,7 +134,7 @@ class Caseload(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", back_populates="caseload")
 
-    caseloads = relationship("Role", back_populates="user")
+    caseloadees = relationship("Caseloadee", back_populates="caseload")
 
 
 class Caseloadee(Base):
@@ -148,7 +143,7 @@ class Caseloadee(Base):
     id = Column(Integer, primary_key=True)
 
     caseload_id = Column(Integer, ForeignKey('caseload.id'))
-    caseload = relationship("Caseload", back_populates="caseloads")
+    caseload = relationship("Caseload", back_populates="caseloadees")
 
     student_id = Column(Integer, ForeignKey('student.id'))
-    student = relationship("School", back_populates="caseloads")
+    student = relationship("Student", back_populates="caseloadees")

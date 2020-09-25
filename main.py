@@ -3,10 +3,11 @@ from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
-from database import SessionLocal, engine
 import crud
 import models
 import schemas
+from database import SessionLocal, engine
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -20,6 +21,20 @@ def get_db():
     finally:
         db.close()
 
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+
+@app.get("/schools/", response_model=List[schemas.School])
+def read_schools(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    #users = crud.get_users(db, skip=skip, limit=limit)
+    # return users
+    pass
+
+
+'''
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -54,3 +69,5 @@ def create_item_for_user(
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
+
+'''
