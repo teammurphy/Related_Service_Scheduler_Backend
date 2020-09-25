@@ -26,7 +26,7 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/users/{username}", response_model=schemas.User)
+@app.get("/user/{username}", response_model=schemas.User)
 def read_user(username: str, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_username(db, username)
     if db_user is None:
@@ -42,11 +42,76 @@ def read_role(role_id: int, db: Session = Depends(get_db)):
     return role
 
 
-@app.get("/schools/", response_model=List[schemas.School])
-def read_schools(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    #users = crud.get_users(db, skip=skip, limit=limit)
-    # return users
-    pass
+@app.get("/caseload/{caseload_id}", response_model=schemas.Caseload)
+def read_caseload(caseload_id: int, db: Session = Depends(get_db)):
+    caseload = crud.get_caseload(db, caseload_id=caseload_id)
+    if caseload is None:
+        raise HTTPException(status_code=404, detail="Caseload not found")
+    return caseload
+
+
+@app.get("/goal/{goal_id}", response_model=schemas.Goal)
+def read_goal(goal_id: int, db: Session = Depends(get_db)):
+    goal = crud.get_goal(db, goal_id=goal_id)
+    if goal is None:
+        raise HTTPException(status_code=404, detail="Goal not found")
+    return goal
+
+
+@app.get("/mandate/{mandate_id}", response_model=schemas.Mandate)
+def read_mandate(mandate_id: int, db: Session = Depends(get_db)):
+    mandate = crud.get_mandate(db, mandate_id=mandate_id)
+    if mandate is None:
+        raise HTTPException(status_code=404, detail="Mandate not found")
+    return mandate
+
+
+@app.get("/iep/{iep_id}", response_model=schemas.Iep)
+def read_iep(iep_id: int, db: Session = Depends(get_db)):
+    iep = crud.get_iep(db, iep_id=iep_id)
+    if iep is None:
+        raise HTTPException(status_code=404, detail="Iep not found")
+    return iep
+
+
+@app.get("/school/{school_id}", response_model=schemas.School)
+def read_school(school_id: str, db: Session = Depends(get_db)):
+    school = crud.get_school(db, school_id=school_id)
+    if school is None:
+        raise HTTPException(status_code=404, detail="School not found")
+    return school
+
+
+@app.get("/student/{student_id}", response_model=schemas.Student)
+def read_student(student_id: int,  db: Session = Depends(get_db)):
+    student = crud.get_student(db, student_id=student_id)
+    if student is None:
+        raise HTTPException(status_code=404, detail="Student not found")
+    return student
+
+
+@app.get("/students", response_model=schemas.Student)
+def read_all_students(db: Session = Depends(get_db)):
+    students = crud.get_all_students(db)
+    if not students:
+        raise HTTPException(status_code=404, detail="Students not found")
+    return students
+
+
+@app.get("/users", response_model=schemas.User)
+def read_all_users(db: Session = Depends(get_db)):
+    users = crud.get_all_users(db)
+    if not users:
+        raise HTTPException(status_code=404, detail="Users not found")
+    return users
+
+
+@ app.get("/cases", response_model=schemas.Case)
+def read_all_cases(db: Session = Depends(get_db)):
+    cases = crud.get_all_cases(db)
+    if not cases:
+        raise HTTPException(status_code=404, detail="cases not found")
+    return cases
 
 
 '''
@@ -65,13 +130,9 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return users
 
 
-
-
-
 @app.post("/users/{user_id}/items/", response_model=schemas.Item)
 def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
-):
+    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)):
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
 

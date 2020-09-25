@@ -17,7 +17,6 @@ role_enum = Enum(*roles, name="role_enum")
 
 counties = ('Q', 'M', 'R',
             'X', 'K')
-
 counties_enum = Enum(*counties, name='county_enum')
 
 
@@ -140,12 +139,12 @@ class Caseload(Base):
 
 
 class Case(Base):
-    __tablename__ = 'caseloadee'
+    __tablename__ = 'case'
 
     id = Column(Integer, primary_key=True)
 
-    case_id = Column(Integer, ForeignKey('caseload.id'))
-    case = relationship("Caseload", back_populates="cases")
+    caseload_id = Column(Integer, ForeignKey('caseload.id'))
+    caseload = relationship("Caseload", back_populates="cases")
 
     student_id = Column(Integer, ForeignKey('student.id'))
     student = relationship("Student", back_populates="cases")
