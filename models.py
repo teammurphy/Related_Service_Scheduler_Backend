@@ -1,9 +1,8 @@
 import enum
 
+from database import Base
 from sqlalchemy import Boolean, Column, Date, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-
-from database import Base
 
 periodicitys = ('weekly', 'daily', 'monthly', 'yearly')
 periodicity_enum = Enum(*periodicitys, name='periodicity')
@@ -26,6 +25,7 @@ class School(Base):
     __tablename__ = "school"
 
     id = Column(String, primary_key=True)
+
     district = Column(String)
     county = Column(counties_enum)
     name = Column(String)
@@ -37,6 +37,7 @@ class Student(Base):
     __tablename__ = 'student'
 
     id = Column(Integer, primary_key=True)
+
     first_name = Column(String)
     last_name = Column(String)
     osis = Column(String)
@@ -48,22 +49,23 @@ class Student(Base):
 
     ieps = relationship("Iep", back_populates="student")
 
-    caseloadees = relationship("Caseloadee", back_populates="student")
+    cases = relationship("Case", back_populates="student")
 
 
 class Iep(Base):
     __tablename__ = 'iep'
 
     id = Column(Integer, primary_key=True)
+
     start_date = Column(Date)
     end_date = Column(Date)
 
     student_id = Column(Integer, ForeignKey('student.id'))
     student = relationship("Student", back_populates="ieps")
 
-    mandate = relationship('Mandate', back_populates='iep')
+    mandates = relationship('Mandate', back_populates='iep')
 
-    goal = relationship('Goal', back_populates='iep')
+    goals = relationship('Goal', back_populates='iep')
 
 
 class Mandate(Base):
@@ -79,7 +81,7 @@ class Mandate(Base):
     interval = Column(Integer)
 
     iep_id = Column(Integer, ForeignKey('iep.id'))
-    iep = relationship("Iep", back_populates="mandate")
+    iep = relationship("Iep", back_populates="mandates")
 
 
 class Goal(Base):
@@ -93,7 +95,7 @@ class Goal(Base):
     schedule = Column(String)
 
     iep_id = Column(Integer, ForeignKey('iep.id'))
-    iep = relationship("Iep", back_populates="goal")
+    iep = relationship("Iep", back_populates="goals")
 
 
 class User(Base):
@@ -107,7 +109,7 @@ class User(Base):
     email = Column(String)
     hashed_password = Column(String)
 
-    role = relationship("Role", back_populates="user")
+    roles = relationship("Role", back_populates="user")
 
     caseloads = relationship("Caseload", back_populates="user")
 
@@ -120,7 +122,7 @@ class Role(Base):
     user_role = Column(role_enum)
 
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="role")
+    user = relationship("User", back_populates="roles")
 
 
 class Caseload(Base):
@@ -132,18 +134,18 @@ class Caseload(Base):
     service = Column(service_enum)
 
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="caseload")
+    user = relationship("User", back_populates="caseloads")
 
-    caseloadees = relationship("Caseloadee", back_populates="caseload")
+    cases = relationship("Case", back_populates="caseload")
 
 
-class Caseloadee(Base):
+class Case(Base):
     __tablename__ = 'caseloadee'
 
     id = Column(Integer, primary_key=True)
 
-    caseload_id = Column(Integer, ForeignKey('caseload.id'))
-    caseload = relationship("Caseload", back_populates="caseloadees")
+    case_id = Column(Integer, ForeignKey('caseload.id'))
+    case = relationship("Caseload", back_populates="cases")
 
     student_id = Column(Integer, ForeignKey('student.id'))
-    student = relationship("Student", back_populates="caseloadees")
+    student = relationship("Student", back_populates="cases")

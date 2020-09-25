@@ -88,11 +88,11 @@ class Role(RoleBase):
         orm_mode = True
 
 
-class CaseloadeeBase(BaseModel):
+class CaseBase(BaseModel):
     pass
 
 
-class Caseloadee(CaseloadeeBase):
+class Case(CaseBase):
     id: int
     caseload_id: int
     student_id: int
@@ -106,7 +106,7 @@ class CaseloadBase(BaseModel):
 class Caseload(CaseloadBase):
     id: int
     user_id: int
-    caseloadees: List[Caseloadee] = []
+    cases: List[Case] = []
 
 
 class UserBase(BaseModel):

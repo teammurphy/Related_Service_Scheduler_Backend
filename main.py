@@ -1,12 +1,11 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, HTTPException
-from sqlalchemy.orm import Session
-
 import crud
 import models
 import schemas
 from database import SessionLocal, engine
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.orm import Session
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -25,6 +24,22 @@ def get_db():
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+
+@app.get("/users/{username}", response_model=schemas.User)
+def read_user(username: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_username(db, username)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+
+@app.get("/role/{role_id}", response_model=schemas.Role)
+def read_role(role_id: int, db: Session = Depends(get_db)):
+    role = crud.get_role(db, role_id=role_id)
+    if role is None:
+        raise HTTPException(status_code=404, detail="Role not found")
+    return role
 
 
 @app.get("/schools/", response_model=List[schemas.School])
@@ -50,12 +65,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return users
 
 
-@app.get("/users/{user_id}", response_model=schemas.User)
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, user_id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+
 
 
 @app.post("/users/{user_id}/items/", response_model=schemas.Item)
