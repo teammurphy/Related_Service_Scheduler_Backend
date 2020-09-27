@@ -28,10 +28,10 @@ async def root():
 
 @app.get("/user/{username}", response_model=schemas.User)
 def read_user(username: str, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_username(db, username)
-    if db_user is None:
+    user = crud.get_user_by_username(db, username)
+    if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+    return user
 
 
 @app.get("/role/{role_id}", response_model=schemas.Role)
@@ -90,7 +90,7 @@ def read_student(student_id: int,  db: Session = Depends(get_db)):
     return student
 
 
-@app.get("/students", response_model=schemas.Student)
+@app.get("/students", response_model=List[schemas.Student])
 def read_all_students(db: Session = Depends(get_db)):
     students = crud.get_all_students(db)
     if not students:
@@ -98,20 +98,47 @@ def read_all_students(db: Session = Depends(get_db)):
     return students
 
 
-@app.get("/users", response_model=schemas.User)
+@app.get("/users", response_model=List[schemas.User])
 def read_all_users(db: Session = Depends(get_db)):
     users = crud.get_all_users(db)
+    print(users)
     if not users:
         raise HTTPException(status_code=404, detail="Users not found")
     return users
 
 
-@ app.get("/cases", response_model=schemas.Case)
+@app.get("/case/{case_id}", response_model=schemas.Case)
+def read_case(case_id: int, db: Session = Depends(get_db)):
+    case = crud.get_case(db, case_id=case_id)
+    if case is None:
+        raise HTTPException(status_code=404, detail="Case not found")
+    return case
+
+
+@ app.get("/cases", response_model=List[schemas.Case])
 def read_all_cases(db: Session = Depends(get_db)):
     cases = crud.get_all_cases(db)
     if not cases:
         raise HTTPException(status_code=404, detail="cases not found")
     return cases
+
+
+@app.get("/cases/byUserId/{user_id}", response_model=schemas.User)
+def read_cases_by_user(user_id: int, db: Session = Depends(get_db)):
+    user = crud.get_user(db, user_id=user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user.cases
+
+
+@app.post("/user")
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    return crud.create_user(db=db, user=user)
+
+
+@app.post("/users/{user_id}/role/")
+def create_role(role: schemas.RoleCreate, user_id: int, db: Session = Depends(get_db)):
+    return crud.create_role(db=db, role=role, user_id=user_id)
 
 
 '''

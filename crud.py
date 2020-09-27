@@ -7,6 +7,10 @@ def get_user_by_username(db: Session, username: int):
     return db.query(models.User).filter(models.User.username == username).first()
 
 
+def get_user(db: Session, user_id: int):
+    return db.query(models.User).filter(models.User.id == user_id).first()
+
+
 def get_role(db: Session, role_id: int):
     return db.query(models.Role).filter(models.Role.id == role_id).first()
 
@@ -35,6 +39,10 @@ def get_student(db: Session, student_id: id):
     return db.query(models.Student).filter(models.Student.id == student_id).first()
 
 
+def get_case(db: Session, case_id: id):
+    return db.query(models.Case).filter(models.Case.id == case_id).first()
+
+
 def get_all_students(db: Session):
     # REVIEW: look into pagenation and limit fast api docs
     return db.query(models.Student).all()
@@ -47,6 +55,24 @@ def get_all_users(db: Session):
 
 def get_all_cases(db: Session):
     return db.query(models.Case).all()
+
+
+def create_user(db: Session, user: schemas.UserCreate):
+    not_hasshed = user.password
+    db_user = models.User(username=user.username, first_name=user.first_name,
+                          last_name=user.last_name, email=user.email, hashed_password=not_hasshed)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def create_role(db: Session, role: schemas.RoleCreate, user_id: int):
+    db_role = models.Role(user_role=role.user_role, user_id=user_id)
+    db.add(db_role)
+    db.commit()
+    db.refresh(db_role)
+    return db_role
 
 
 '''

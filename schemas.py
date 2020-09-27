@@ -80,6 +80,10 @@ class RoleBase(BaseModel):
     user_role: str
 
 
+class RoleCreate(RoleBase):
+    pass
+
+
 class Role(RoleBase):
     id: int
     user_id: int
@@ -97,6 +101,9 @@ class Case(CaseBase):
     caseload_id: int
     student_id: int
 
+    class Config:
+        orm_mode = True
+
 
 class CaseloadBase(BaseModel):
     title: str
@@ -107,6 +114,9 @@ class Caseload(CaseloadBase):
     id: int
     user_id: int
     cases: List[Case] = []
+
+    class Config:
+        orm_mode = True
 
 
 class UserBase(BaseModel):
@@ -124,3 +134,6 @@ class User(UserBase):
     id: int
     role: List[Role] = []
     caseloads: List[Caseload] = []
+
+    class Config:
+        orm_mode = True
