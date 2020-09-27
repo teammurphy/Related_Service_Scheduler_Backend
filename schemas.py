@@ -112,6 +112,10 @@ class CaseBase(BaseModel):
     student_id: int
 
 
+class CaseCreate(CaseBase):
+    pass
+
+
 class Case(CaseBase):
     id: int
 

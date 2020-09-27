@@ -143,8 +143,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/users/{user_id}/role")
-def create_role(role: schemas.RoleCreate, user_id: int, db: Session = Depends(get_db)):
-    return crud.create_role(db=db, role=role, user_id=user_id)
+def create_role_user(role: schemas.RoleCreate, user_id: int, db: Session = Depends(get_db)):
+    role.user_id = user_id
+    return crud.create_role(db=db, role=role)
 
 
 @app.post("/school")
@@ -165,3 +166,23 @@ def create_mandate(mandate: schemas.MandateCreate, db: Session = Depends(get_db)
 @app.post("/iep")
 def create_iep(iep: schemas.IepCreate, db: Session = Depends(get_db)):
     return crud.create_iep(db=db, iep=iep)
+
+
+@app.post("/goal")
+def create_goal(goal: schemas.GoalCreate, db: Session = Depends(get_db)):
+    return crud.create_goal(db=db, goal=goal)
+
+
+@app.post("/caseload")
+def create_caseload(caseload: schemas.CaseloadCreate, db: Session = Depends(get_db)):
+    return crud.create_caseload(db=db, caseload=caseload)
+
+
+@app.post("/case")
+def create_case(case: schemas.CaseCreate, db: Session = Depends(get_db)):
+    return crud.create_case(db=db, case=case)
+
+
+@app.post("/role")
+def create_role(role: schemas.RoleCreate, db: Session = Depends(get_db)):
+    return crud.create_role(db=db, role=role)

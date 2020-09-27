@@ -70,8 +70,8 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def create_role(db: Session, role: schemas.RoleCreate, user_id: int):
-    db_role = models.Role(user_role=role.user_role, user_id=user_id)
+def create_role(db: Session, role: schemas.RoleCreate):
+    db_role = models.Role(user_role=role.user_role, user_id=role.user_id)
     db.add(db_role)
     db.commit()
     db.refresh(db_role)
@@ -114,3 +114,31 @@ def create_iep(db: Session, iep: schemas.IepCreate):
     db.commit()
     db.refresh(db_iep)
     return db_iep
+
+
+def create_goal(db: Session, goal: schemas.GoalCreate):
+    db_goal = models.Goal(goal=goal.goal, criteria=goal.criteria,
+                          method=goal.method, schedule=goal.schedule, iep_id=goal.iep_id)
+
+    db.add(db_goal)
+    db.commit()
+    db.refresh(db_goal)
+    return db_goal
+
+
+def create_caseload(db: Session, caseload: schemas.CaseloadCreate):
+    db_caseload = models.Caseload(
+        title=caseload.title, service=caseload.service, user_id=caseload.user_id)
+    db.add(db_caseload)
+    db.commit()
+    db.refresh(db_caseload)
+    return db_caseload
+
+
+def create_case(db: Session, case: schemas.CaseCreate):
+    db_case = models.Case(caseload_id=case.caseload_id,
+                          student_id=case.student_id)
+    db.add(db_case)
+    db.commit()
+    db.refresh(de_case)
+    return db_case
