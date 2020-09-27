@@ -136,36 +136,16 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 
-@app.post("/users/{user_id}/role/")
+@app.post("/users/{user_id}/role")
 def create_role(role: schemas.RoleCreate, user_id: int, db: Session = Depends(get_db)):
     return crud.create_role(db=db, role=role, user_id=user_id)
 
 
-'''
-
-@app.post("/users/", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return crud.create_user(db=db, user=user)
+@app.post("/school")
+def create_school(school: schemas.SchoolCreate, db: Session = Depends(get_db)):
+    return crud.create_school(db=db, school=school)
 
 
-@app.get("/users/", response_model=List[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_users(db, skip=skip, limit=limit)
-    return users
-
-
-@app.post("/users/{user_id}/items/", response_model=schemas.Item)
-def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    return crud.create_user_item(db=db, item=item, user_id=user_id)
-
-
-@app.get("/items/", response_model=List[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
-    return items
-
-'''
+@app.post("/student")
+def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db)):
+    return crud.create_student(db=db, student=student)

@@ -75,33 +75,21 @@ def create_role(db: Session, role: schemas.RoleCreate, user_id: int):
     return db_role
 
 
-'''
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
-
-
-def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.User).offset(skip).limit(limit).all()
-
-
-def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(
-        email=user.email, hashed_password=fake_hashed_password)
-    db.add(db_user)
+def create_school(db: Session, school: schemas.SchoolCreate):
+    db_school = models.School(id=school.id, district=school.district,
+                              county=school.county, name=school.name)
+    db.add(db_school)
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(db_school)
+    return db_school
 
 
-def get_items(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+def create_student(db: Session, student: schemas.StudentCreate):
+    # REVIEW: id string???
 
-
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
-    db.add(db_item)
+    db_student = models.Student(first_name=student.first_name, last_name=student.last_name,
+                                osis=student.osis, birthdate=student.birthdate, grade=student.grade, school_id=student.school_id)
+    db.add(db_student)
     db.commit()
-    db.refresh(db_item)
-    return db_item
-'''
+    db.refresh(db_student)
+    return db_student

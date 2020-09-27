@@ -53,9 +53,12 @@ class StudentBase(BaseModel):
     grade: str
 
 
+class StudentCreate(StudentBase):
+    school_id: str
+
+
 class Student(StudentBase):
     id: int
-    school_id: int
     ieps: List[Iep] = []
 
     class Config:
@@ -63,13 +66,18 @@ class Student(StudentBase):
 
 
 class SchoolBase(BaseModel):
+    id: str
     district: str
-    country: str
+    county: str
     name: str
 
 
+class SchoolCreate(SchoolBase):
+    pass
+
+
 class School(SchoolBase):
-    id: str
+
     students: List[Student] = []
 
     class Config:
