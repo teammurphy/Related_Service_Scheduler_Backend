@@ -140,5 +140,95 @@ def create_case(db: Session, case: schemas.CaseCreate):
                           student_id=case.student_id)
     db.add(db_case)
     db.commit()
-    db.refresh(de_case)
+    db.refresh(db_case)
     return db_case
+
+
+def delete_school(db: Session, school_id: str):
+    db_school = get_school(db, school_id)
+    if db_school:
+        db.delete(db_school)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_user_by_username(db: Session, username: str):
+    db_user = get_user_by_username(db, username)
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_student(db: Session, student_id: int):
+    db_student = get_student(db, student_id)
+    if db_student:
+        db.delete(db_student)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_mandate(db: Session, mandate_id: int):
+    db_mandate = get_mandate(db, mandate_id)
+    if db_mandate:
+        db.delete(db_mandate)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_iep(db: Session, iep_id: int):
+    db_iep = get_iep(db, iep_id)
+    if db_iep:
+        db.delete(db_iep)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_goal(db: Session, goal_id: int):
+    db_goal = get_goal(db, goal_id)
+    if db_goal:
+        db.delete(db_goal)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_caseload(db: Session, caseload_id: int):
+    db_caseload = get_caseload(db, caseload_id)
+    if db_caseload:
+        db.delete(db_caseload)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_case(db: Session, case_id: int):
+    db_case = get_case(db, case_id)
+    if db_case:
+        db.delete(db_case)
+        db.commit()
+        return True
+    else:
+        return False
+
+
+def delete_role(db: Session, role_id: int):
+    db_role = get_role(db, role_id)
+    if db_role:
+        db.delete(db_role)
+        db.commit()
+        return True
+    else:
+        return False

@@ -186,3 +186,75 @@ def create_case(case: schemas.CaseCreate, db: Session = Depends(get_db)):
 @app.post("/role")
 def create_role(role: schemas.RoleCreate, db: Session = Depends(get_db)):
     return crud.create_role(db=db, role=role)
+
+
+@app.delete("/user/{username}")
+def delete_user(username: str, db: Session = Depends(get_db)):
+    deleted = crud.delete_user_by_username(db=db, username=usernames)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Username not found")
+    return username
+
+
+@app.delete("/school/{school_id}")
+def delete_school(school_id: str, db: Session = Depends(get_db)):
+    deleted = crud.delete_school(db=db, school_id=school_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="School not found")
+    return school_id
+
+
+@app.delete("/student/{student_id}")
+def delete_student(student_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_student(db=db, student_id=student_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Student not found")
+    return student_id
+
+
+@app.delete("/mandate/{mandate_id}")
+def delete_mandate(mandate_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_mandate(db=db, mandate_id=mandate_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Mandate not found")
+    return mandate_id
+
+
+@app.delete("/iep/{iep_id}")
+def delete_iep(iep_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_iep(db=db, iep_id=iep_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Iep not found")
+    return iep_id
+
+
+@app.delete("/goal/{goal_id}")
+def delete_goal(goal_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_goal(db=db, goal_id=goal_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Goal not found")
+    return goal_id
+
+
+@app.delete("/caseload/{caseload_id}")
+def delete_caseload(caseload_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_caseload(db=db, caseload_id=caseload_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Caseload not found")
+    return caseload_id
+
+
+@app.delete("/case/{case_id}")
+def delete_case(case_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_case(db=db, case_id=case_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Case not found")
+    return case_id
+
+
+@app.delete("/role/{role_id}")
+def delete_role(role_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_role(db=db, role_id=role_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Role not found")
+    return role_id
