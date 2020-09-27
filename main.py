@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 import crud
@@ -7,7 +8,12 @@ from database import SessionLocal, engine
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
+logging.basicConfig(filename='main.log',
+                    format='[%(filename)s:%(lineno)d] %(message)s', level=logging.DEBUG)
+logging.warning("New Run Starts Here")
+
 models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 
@@ -115,7 +121,7 @@ def read_case(case_id: int, db: Session = Depends(get_db)):
     return case
 
 
-@ app.get("/cases", response_model=List[schemas.Case])
+@app.get("/cases", response_model=List[schemas.Case])
 def read_all_cases(db: Session = Depends(get_db)):
     cases = crud.get_all_cases(db)
     if not cases:
@@ -149,3 +155,13 @@ def create_school(school: schemas.SchoolCreate, db: Session = Depends(get_db)):
 @app.post("/student")
 def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db)):
     return crud.create_student(db=db, student=student)
+
+
+@app.post("/mandate")
+def create_mandate(mandate: schemas.MandateCreate, db: Session = Depends(get_db)):
+    return crud.create_mandate(db=db, mandate=mandate)
+
+
+@app.post("/iep")
+def create_iep(iep: schemas.IepCreate, db: Session = Depends(get_db)):
+    return crud.create_iep(db=db, iep=iep)

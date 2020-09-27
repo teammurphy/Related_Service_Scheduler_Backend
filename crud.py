@@ -1,3 +1,5 @@
+import logging
+
 import models
 import schemas
 from sqlalchemy.orm import Session
@@ -45,6 +47,7 @@ def get_case(db: Session, case_id: id):
 
 def get_all_students(db: Session):
     # REVIEW: look into pagenation and limit fast api docs
+    logging.info(db.query(models.Student).all())
     return db.query(models.Student).all()
 
 
@@ -93,3 +96,21 @@ def create_student(db: Session, student: schemas.StudentCreate):
     db.commit()
     db.refresh(db_student)
     return db_student
+
+
+def create_mandate(db: Session, mandate: schemas.MandateCreate):
+    db_mandate = models.Mandate(service=mandate.service, group_size=mandate.group_size, duration=mandate.duration,
+                                periodicity=mandate.periodicity, frequency=mandate.frequency, interval=mandate.interval, iep_id=mandate.iep_id)
+    db.add(db_mandate)
+    db.commit()
+    db.refresh(db_mandate)
+    return db_mandate
+
+
+def create_iep(db: Session, iep: schemas.IepCreate):
+    db_iep = models.Iep(start_date=iep.start_date,
+                        end_date=iep.end_date, student_id=iep.student_id)
+    db.add(db_iep)
+    db.commit()
+    db.refresh(db_iep)
+    return db_iep

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import List, Optional
 
 from pydantic import BaseModel
@@ -11,9 +11,12 @@ class GoalBase(BaseModel):
     schedule: str
 
 
+class GoalCreate(GoalBase):
+    iep_id: int
+
+
 class Goal(GoalBase):
     id: int
-    iep_id: int
 
 
 class MandateBase(BaseModel):
@@ -25,9 +28,12 @@ class MandateBase(BaseModel):
     interval: int
 
 
+class MandateCreate(MandateBase):
+    iep_id: int
+
+
 class Mandate(MandateBase):
     id: int
-    iep_id: int
 
 
 class IepBase(BaseModel):
@@ -35,9 +41,12 @@ class IepBase(BaseModel):
     end_date: datetime
 
 
+class IepCreate(IepBase):
+    student_id: int
+
+
 class Iep(IepBase):
     id: int
-    student_id: int
     mandates: List[Mandate] = []
     goals: List[Goal] = []
 
@@ -49,7 +58,7 @@ class StudentBase(BaseModel):
     first_name: str
     last_name: str
     osis: str
-    birthdate: datetime
+    birthdate: date
     grade: str
 
 
@@ -77,7 +86,6 @@ class SchoolCreate(SchoolBase):
 
 
 class School(SchoolBase):
-
     students: List[Student] = []
 
     class Config:
@@ -89,25 +97,23 @@ class RoleBase(BaseModel):
 
 
 class RoleCreate(RoleBase):
-    pass
+    user_id: int
 
 
 class Role(RoleBase):
     id: int
-    user_id: int
 
     class Config:
         orm_mode = True
 
 
 class CaseBase(BaseModel):
-    pass
+    caseload_id: int
+    student_id: int
 
 
 class Case(CaseBase):
     id: int
-    caseload_id: int
-    student_id: int
 
     class Config:
         orm_mode = True
@@ -118,9 +124,12 @@ class CaseloadBase(BaseModel):
     service: str
 
 
+class CaseloadCreate(CaseloadBase):
+    user_id: int
+
+
 class Caseload(CaseloadBase):
     id: int
-    user_id: int
     cases: List[Case] = []
 
     class Config:
