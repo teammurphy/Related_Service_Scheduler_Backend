@@ -258,3 +258,79 @@ def delete_role(role_id: int, db: Session = Depends(get_db)):
     if deleted is False:
         raise HTTPException(status_code=404, detail="Role not found")
     return role_id
+
+
+@app.put("/user/{username}")
+def update_user(username: str, db: Session = Depends(get_db)):
+    # TODO: finish this
+    pass
+
+
+@app.put("/school/{school_id}")
+def update_school(school: schemas.SchoolCreate, school_id: str, db: Session = Depends(get_db)):
+    updated = crud.update_school(db=db, school_id=school_id, school=school)
+    if updated is False:
+        raise HTTPException(status_code=404, detail="School not found")
+    return school.id
+
+
+@app.put("/student/{student_id}")
+def update_student(updated_student: schemas.StudentCreate, student_id: int, db: Session = Depends(get_db)):
+    updated = crud.update_student(
+        db=db, student_id=student_id, updated_student=updated_student)
+    if updated is False:
+        raise HTTPException(status_code=404, detail="Student not found")
+    return student_id
+
+
+@app.put("/mandate/{mandate_id}")
+def update_mandate(updated_mandate: schemas.MandateCreate, mandate_id: int, db: Session = Depends(get_db)):
+    updated = crud.update_mandate(
+        db=db, mandate_id=mandate_id, updated_mandate=updated_mandate)
+    if updated is False:
+        raise HTTPException(status_code=404, detail="Mandate not found")
+    return mandate_id
+
+
+@app.put("/iep/{iep_id}")
+def update_iep(updated_iep: schemas.IepCreate, iep_id: int, db: Session = Depends(get_db)):
+    updated = crud.update_iep(db=db, iep_id=iep_id, updated_iep=updated_iep)
+    if update is False:
+        raise HTTPException(status_code=404, detail="Iep not found")
+    return iep_id
+
+
+@app.put("/goal/{goal_id}")
+def update_goal(updated_goal: schemas.GoalCreate, goal_id: int, db: Session = Depends(get_db)):
+    updated = crud.update_goal(
+        db=db, goal_id=goal_id, updated_goal=updated_goal)
+    if update is False:
+        raise HTTPException(status_code=404, detail="Goal not found")
+    return goal_id
+
+
+@app.put("/caseload/{caseload_id}")
+def update_caseload(updated_caseload: schemas.CaseloadCreate, caseload_id: int, db: Session = Depends(get_db)):
+    updated = crud.update_caseload(
+        db=db, caseload_id=caseload_id, updated_caseload=updated_caseload)
+    if update is False:
+        raise HTTPException(status_code=404, detail="caseload not found")
+    return caseload_id
+
+
+@app.put("/case/{case_id}")
+def updated_case(updated_case: schemas.CaseCreate, case_id: int, db: Session = Depends(get_db)):
+    updated = crud.update_case(
+        db=db, case_id=case_id, updated_case=updated_case)
+    if update is False:
+        raise HTTPException(status_code=404, detail="case not found")
+    return case_id
+
+
+@app.put("/role/{role_id}")
+def update_role(updated_role: schemas.RoleCreate, role_id: int, db: Session = Depends(get_db)):
+    updated = crud.update_role(
+        db=db, role_id=role_id, updated_role=updated_role)
+    if updated is False:
+        raise HTTPException(status_code=404, detail="Role not found")
+    return role_id

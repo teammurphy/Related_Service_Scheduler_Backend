@@ -75,14 +75,13 @@ class Student(StudentBase):
 
 
 class SchoolBase(BaseModel):
-    id: str
     district: str
     county: str
     name: str
 
 
 class SchoolCreate(SchoolBase):
-    pass
+    id: str
 
 
 class School(SchoolBase):

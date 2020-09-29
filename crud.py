@@ -81,6 +81,7 @@ def create_role(db: Session, role: schemas.RoleCreate):
 def create_school(db: Session, school: schemas.SchoolCreate):
     db_school = models.School(id=school.id, district=school.district,
                               county=school.county, name=school.name)
+    # db_school = models.School(school)
     db.add(db_school)
     db.commit()
     db.refresh(db_school)
@@ -232,3 +233,61 @@ def delete_role(db: Session, role_id: int):
         return True
     else:
         return False
+
+
+def update_object(db: Session, db_object, new_stuff):
+    for i in new_stuff:
+        setattr(db_object, i[0], i[1])
+    db.commit()
+    db.refresh(db_object)
+    return True
+
+
+def update_school(db: Session, school_id: int, school: schemas.SchoolCreate):
+    db_school = get_school(db, school_id)
+    if db_school is None:
+        return False
+    return update_object(db, db_school, school)
+
+
+def update_student(db: Session, student_id: int, updated_student: schemas.StudentCreate):
+    db_student = get_student(db, student_id)
+    if db_student is None:
+        return False
+    return update_object(db, db_student, updated_student)
+
+
+def update_mandate(db: Session, mandate_id: int, updated_mandate: schemas.MandateCreate):
+    db_mandate = get_mandate(db, mandate_id)
+    if db_mandate is None:
+        return False
+    return update_object(db, db_mandate, updated_mandate)
+
+
+def update_iep(db: Session, iep_id: int, updated_iep: schemas.MandateCreate):
+    db_iep = get_iep(db, iep_id)
+    if db_iep is None:
+        return False
+    return update_object(db, db_iep, updated_iep)
+
+
+def update_goal(db: Session, goal_id: int, updated_goal: schemas.GoalCreate):
+    db_goal = get_goal(db, goal_id)
+    if db_goal is None:
+        return False
+    return update_object(db, db_goal, updated_goal)
+
+
+def update_caseload(db: Session, caseload_id: int, updated_caseload: schemas.CaseloadCreate):
+    db_caseload = get_caseload(db, caseload_id)
+    if db_caseload is None:
+        return False
+    return update_object(db, db_caseload, updated_caseload)
+
+
+def update_role(db: Session, role_id: int, updated_role: schemas.RoleCreate):
+    db_role = get_role(db, role_id)
+    if db_role is None:
+        return False
+
+    return update_object(db, db_role, updated_role)
