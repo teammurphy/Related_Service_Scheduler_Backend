@@ -40,7 +40,7 @@ def create_role_user(role: schemas.RoleCreate, user_id: int, db: Session = Depen
 
 @router.delete("/user/{username}", tags=["users"])
 def delete_user(username: str, db: Session = Depends(get_db)):
-    deleted = crud.delete_user_by_username(db=db, username=usernames)
+    deleted = crud.delete_user_by_username(db=db, username=username)
     if deleted is False:
         raise HTTPException(status_code=404, detail="Username not found")
     return username
