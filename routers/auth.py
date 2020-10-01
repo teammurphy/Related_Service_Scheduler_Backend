@@ -5,7 +5,7 @@ from typing import Optional
 
 import crud
 import schemas
-from config import secret_key
+#from config import secret_key
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
