@@ -8,8 +8,12 @@ verify_ssl = true
 [packages]
 fastapi = "*"
 uvicorn = "*"
-sqlalchemy = "*"
+SQLAlchemy = "*"
 psycopg2-binary = "*"
+python-multipart = "*"
+python-jose = "*"
+cryptography = "*"
+passlib = "*"
 
 [requires]
 python_version = "3.8"
