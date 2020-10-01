@@ -1,7 +1,7 @@
 import logging
 
 import models
-import routers.auth
+import routers.auth as auth
 import schemas
 from sqlalchemy.orm import Session
 
