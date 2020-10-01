@@ -6,6 +6,7 @@ import models
 import schemas
 from database import engine, get_db
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from routers import (auth, case, caseload, goal, iep, mandate, roles, school,
@@ -30,3 +31,12 @@ app.include_router(goal.router)
 app.include_router(case.router)
 app.include_router(caseload.router)
 app.include_router(auth.router)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
