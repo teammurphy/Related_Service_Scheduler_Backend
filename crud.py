@@ -62,10 +62,9 @@ def get_all_cases(db: Session):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    not_hasshed = user.password
     hashed_password = auth.get_password_hash(user.password)
-    db_user = models.User(username=user.username, first_name=user.first_name,
-                          last_name=user.last_name, email=user.email, hashed_password=hashed_password)
+    db_user = models.User(hashed_password=hashed_password)
+    [setattr(db_user, i[0], i[1]) for i in user]
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -73,7 +72,8 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 
 def create_role(db: Session, role: schemas.RoleCreate):
-    db_role = models.Role(user_role=role.user_role, user_id=role.user_id)
+    db_role = models.Role()
+    [setattr(db_role, i[0], i[1]) for i in role]
     db.add(db_role)
     db.commit()
     db.refresh(db_role)
@@ -81,9 +81,8 @@ def create_role(db: Session, role: schemas.RoleCreate):
 
 
 def create_school(db: Session, school: schemas.SchoolCreate):
-    db_school = models.School(id=school.id, district=school.district,
-                              county=school.county, name=school.name)
-    # db_school = models.School(school)
+    db_school = models.School()
+    [setattr(db_school, i[0], i[1]) for i in school]
     db.add(db_school)
     db.commit()
     db.refresh(db_school)
@@ -91,10 +90,8 @@ def create_school(db: Session, school: schemas.SchoolCreate):
 
 
 def create_student(db: Session, student: schemas.StudentCreate):
-    # REVIEW: id string???
-
-    db_student = models.Student(first_name=student.first_name, last_name=student.last_name,
-                                osis=student.osis, birthdate=student.birthdate, grade=student.grade, school_id=student.school_id)
+    db_student = models.Student()
+    [setattr(db_student, i[0], i[1]) for i in student]
     db.add(db_student)
     db.commit()
     db.refresh(db_student)
@@ -102,8 +99,8 @@ def create_student(db: Session, student: schemas.StudentCreate):
 
 
 def create_mandate(db: Session, mandate: schemas.MandateCreate):
-    db_mandate = models.Mandate(service=mandate.service, group_size=mandate.group_size, duration=mandate.duration,
-                                periodicity=mandate.periodicity, frequency=mandate.frequency, interval=mandate.interval, iep_id=mandate.iep_id)
+    db_mandate = models.Mandate()
+    [setattr(db_mandate, i[0], i[1]) for i in mandate]
     db.add(db_mandate)
     db.commit()
     db.refresh(db_mandate)
@@ -111,8 +108,8 @@ def create_mandate(db: Session, mandate: schemas.MandateCreate):
 
 
 def create_iep(db: Session, iep: schemas.IepCreate):
-    db_iep = models.Iep(start_date=iep.start_date,
-                        end_date=iep.end_date, student_id=iep.student_id)
+    db_iep = models.Iep()
+    [setattr(db_iep, i[0], i[1]) for i in iep]
     db.add(db_iep)
     db.commit()
     db.refresh(db_iep)
@@ -120,8 +117,8 @@ def create_iep(db: Session, iep: schemas.IepCreate):
 
 
 def create_goal(db: Session, goal: schemas.GoalCreate):
-    db_goal = models.Goal(goal=goal.goal, criteria=goal.criteria,
-                          method=goal.method, schedule=goal.schedule, iep_id=goal.iep_id)
+    db_goal = models.Goal()
+    [setattr(db_goal, i[0], i[1]) for i in goal]
 
     db.add(db_goal)
     db.commit()
@@ -130,8 +127,8 @@ def create_goal(db: Session, goal: schemas.GoalCreate):
 
 
 def create_caseload(db: Session, caseload: schemas.CaseloadCreate):
-    db_caseload = models.Caseload(
-        title=caseload.title, service=caseload.service, user_id=caseload.user_id)
+    db_caseload = models.Caseload()
+    [setattr(db_caseload, i[0], i[1]) for i in caseload]
     db.add(db_caseload)
     db.commit()
     db.refresh(db_caseload)
@@ -139,8 +136,8 @@ def create_caseload(db: Session, caseload: schemas.CaseloadCreate):
 
 
 def create_case(db: Session, case: schemas.CaseCreate):
-    db_case = models.Case(caseload_id=case.caseload_id,
-                          student_id=case.student_id)
+    db_case = models.Case()
+    [setattr(db_case, i[0], i[1]) for i in case]
     db.add(db_case)
     db.commit()
     db.refresh(db_case)

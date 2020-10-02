@@ -11,8 +11,8 @@ periodicity_enum = Enum(*periodicitys, name='periodicity')
 services = ('speech', 'OT', 'PT')
 service_enum = Enum(*services, name="service")
 
-roles = ('provider', 'supervisor', 'principal', 'admin', 'seeall')
-role_enum = Enum(*roles, name="role_enum")
+names = ('provider', 'supervisor', 'principal', 'admin', 'seeall')
+name_enum = Enum(*names, name="name_enum")
 
 
 counties = ('Q', 'M', 'R',
@@ -103,8 +103,8 @@ class User(Base):
     id = Column(Integer, primary_key=True)
 
     username = Column(String, unique=True)
-    first_name = Column(String)
-    last_name = Column(String)
+    #first_name = Column(String)
+    #last_name = Column(String)
     email = Column(String)
     hashed_password = Column(String)
 
@@ -118,7 +118,10 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True)
 
-    user_role = Column(role_enum)
+    name = Column(name_enum)
+    school = Column(String)
+    district = Column(String)
+    county = Column(counties_enum)
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", back_populates="roles")

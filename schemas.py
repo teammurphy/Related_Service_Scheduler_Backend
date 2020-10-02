@@ -78,10 +78,11 @@ class SchoolBase(BaseModel):
     district: str
     county: str
     name: str
+    id: str
 
 
 class SchoolCreate(SchoolBase):
-    id: str
+    pass
 
 
 class School(SchoolBase):
@@ -92,7 +93,10 @@ class School(SchoolBase):
 
 
 class RoleBase(BaseModel):
-    user_role: str
+    name: str
+    school: str
+    district: str
+    county: str
 
 
 class RoleCreate(RoleBase):
@@ -141,8 +145,8 @@ class Caseload(CaseloadBase):
 
 class UserBase(BaseModel):
     username: str
-    first_name: str
-    last_name: str
+    #first_name: str
+    #last_name: str
     email: str
 
 
@@ -152,7 +156,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    role: List[Role] = []
+    roles: List[Role] = []
     caseloads: List[Caseload] = []
 
     class Config:
@@ -166,6 +170,7 @@ class UserInDB(User):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    user: User
 
 
 class TokenData(BaseModel):

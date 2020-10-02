@@ -91,7 +91,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    logging.info(user.roles)
+    return {"access_token": access_token, "token_type": "bearer", "user": user}
 
 
 @ router.get("/users/me", tags=["auth"])
