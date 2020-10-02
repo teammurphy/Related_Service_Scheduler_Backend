@@ -3,9 +3,10 @@ import os
 from datetime import datetime, timedelta
 from typing import Optional
 
-import crud
+#import crud
+import crud.user
 import schemas
-#from config import secret_key
+from config import secret_key
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -13,8 +14,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-SECRET_KEY = os.environ["secret_key"]
-#SECRET_KEY = secret_key
+#SECRET_KEY = os.environ["secret_key"]
+SECRET_KEY = secret_key
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -33,7 +34,7 @@ def get_password_hash(password):
 
 
 def authenticate_user(db: Session, username: str, password: str):
-    user = crud.get_user_by_username(db, username)
+    user = crud.user.get_user_by_username(db, username)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
@@ -66,7 +67,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         token_data = schemas.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = crud.get_user_by_username(db, username=token_data.username)
+    user = crud.user.get_user_by_username(db, username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
@@ -93,7 +94,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     )
     logging.info(user.roles)
     return {"access_token": access_token, "token_type": "bearer", "user": user}
-    # , "user": user
 
 
 @ router.get("/users/me", tags=["auth"])

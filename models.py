@@ -20,6 +20,22 @@ counties = ('Q', 'M', 'R',
 counties_enum = Enum(*counties, name='county_enum')
 
 
+class User(Base):
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True)
+
+    username = Column(String, unique=True)
+    #first_name = Column(String)
+    #last_name = Column(String)
+    email = Column(String)
+    hashed_password = Column(String)
+
+    roles = relationship("Role", back_populates="user")
+
+    caseloads = relationship("Caseload", back_populates="user")
+
+
 class School(Base):
     __tablename__ = "school"
 
@@ -95,22 +111,6 @@ class Goal(Base):
 
     iep_id = Column(Integer, ForeignKey('iep.id'))
     iep = relationship("Iep", back_populates="goals")
-
-
-class User(Base):
-    __tablename__ = "user"
-
-    id = Column(Integer, primary_key=True)
-
-    username = Column(String, unique=True)
-    #first_name = Column(String)
-    #last_name = Column(String)
-    email = Column(String)
-    hashed_password = Column(String)
-
-    roles = relationship("Role", back_populates="user")
-
-    caseloads = relationship("Caseload", back_populates="user")
 
 
 class Role(Base):
