@@ -163,6 +163,14 @@ class User(UserBase):
         orm_mode = True
 
 
+class UserResponse(UserBase):
+    id: int
+    roles: List[Role] = []
+
+    class Config:
+        orm_mode = True
+
+
 class UserInDB(User):
     hashed_password: str
 
@@ -170,7 +178,7 @@ class UserInDB(User):
 class Token(BaseModel):
     access_token: str
     token_type: str
-    user: User
+    user: UserResponse
 
 
 class TokenData(BaseModel):
