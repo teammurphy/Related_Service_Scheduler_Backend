@@ -1,6 +1,8 @@
 import logging
+from functools import lru_cache
 from typing import List
 
+import config
 import crud
 import models
 import schemas
@@ -31,6 +33,11 @@ app.include_router(goal.router)
 app.include_router(case.router)
 app.include_router(caseload.router)
 app.include_router(auth.router)
+
+
+@lru_cache()
+def get_settings():
+    return config.Settings()
 
 
 app.add_middleware(
