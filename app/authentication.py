@@ -10,6 +10,7 @@ from fastapi.security import (OAuth2PasswordBearer, OAuth2PasswordRequestForm,
                               SecurityScopes)
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 SECRET_KEY = os.environ["secret_key"]
