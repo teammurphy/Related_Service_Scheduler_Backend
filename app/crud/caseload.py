@@ -4,6 +4,8 @@ import models
 import schemas
 from sqlalchemy.orm import Session
 
+from . import crud_base
+
 
 def get_caseload(db: Session, caseload_id: int):
     return db.query(models.Caseload).filter(models.Caseload.id == caseload_id).first()
@@ -11,6 +13,8 @@ def get_caseload(db: Session, caseload_id: int):
 
 def create_caseload(db: Session, caseload: schemas.CaseloadCreate):
     db_caseload = models.Caseload()
+    if caseload.service not in crud_base.services:
+        logging.info('service not allowed')
     [setattr(db_caseload, i[0], i[1]) for i in caseload]
     db.add(db_caseload)
     db.commit()

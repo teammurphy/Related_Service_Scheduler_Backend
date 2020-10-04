@@ -172,6 +172,7 @@ class User(UserBase):
 class UserResponse(UserBase):
     id: int
     roles: List[Role] = []
+    disabled: bool
 
     class Config:
         orm_mode = True

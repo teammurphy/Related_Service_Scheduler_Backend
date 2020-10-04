@@ -1,23 +1,6 @@
-import enum
-
 from database import Base
 from sqlalchemy import Boolean, Column, Date, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-
-periodicitys = ('weekly', 'daily', 'monthly', 'yearly')
-periodicity_enum = Enum(*periodicitys, name='periodicity')
-
-
-services = ('speech', 'OT', 'PT')
-service_enum = Enum(*services, name="service")
-
-names = ('provider', 'supervisor', 'principal', 'admin', 'seeall')
-name_enum = Enum(*names, name="name_enum")
-
-
-counties = ('Q', 'M', 'R',
-            'X', 'K')
-counties_enum = Enum(*counties, name='county_enum')
 
 
 class User(Base):
@@ -43,7 +26,7 @@ class School(Base):
     id = Column(String, primary_key=True)
 
     district = Column(String)
-    county = Column(counties_enum)
+    county = Column(String)
     name = Column(String)
 
     students = relationship("Student", back_populates="school")
@@ -89,10 +72,10 @@ class Mandate(Base):
 
     id = Column(Integer, primary_key=True)
 
-    service = Column(service_enum)
+    service = Column(String)
     group_size = Column(Integer)
     duration = Column(Integer)
-    periodicity = Column(periodicity_enum)
+    periodicity = Column(String)
     frequency = Column(Integer)
     interval = Column(Integer)
 
@@ -119,11 +102,11 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True)
 
-    name = Column(name_enum)
+    name = Column(String)
     school = Column(String)
     district = Column(String)
-    county = Column(counties_enum)
-    service = Column(service_enum)
+    county = Column(String)
+    service = Column(String)
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", back_populates="roles")
@@ -135,7 +118,7 @@ class Caseload(Base):
     id = Column(Integer, primary_key=True)
 
     title = Column(String)
-    service = Column(service_enum)
+    service = Column(String)
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", back_populates="caseloads")
