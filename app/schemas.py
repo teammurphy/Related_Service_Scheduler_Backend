@@ -97,6 +97,7 @@ class RoleBase(BaseModel):
     school: str
     district: str
     county: str
+    service: str
 
 
 class RoleCreate(RoleBase):
@@ -108,6 +109,10 @@ class Role(RoleBase):
 
     class Config:
         orm_mode = True
+
+
+class RoleAddToUser(RoleBase):
+    pass
 
 
 class CaseBase(BaseModel):
@@ -158,6 +163,7 @@ class User(UserBase):
     id: int
     roles: List[Role] = []
     caseloads: List[Caseload] = []
+    disabled: bool
 
     class Config:
         orm_mode = True
@@ -183,3 +189,4 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+    scopes: List[str] = []

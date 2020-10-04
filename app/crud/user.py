@@ -1,7 +1,7 @@
 import logging
 
+import authentication
 import models
-import routers.auth as auth
 import schemas
 from sqlalchemy.orm import Session
 
@@ -20,8 +20,8 @@ def get_all_users(db: Session):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    hashed_password = auth.get_password_hash(user.password)
-    db_user = models.User(hashed_password=hashed_password)
+    hashed_password = authentication.get_password_hash(user.password)
+    db_user = models.User(hashed_password=hashed_password, disabled=False)
     [setattr(db_user, i[0], i[1]) for i in user]
     db.add(db_user)
     db.commit()

@@ -30,6 +30,7 @@ class User(Base):
     #last_name = Column(String)
     email = Column(String)
     hashed_password = Column(String)
+    disabled = Column(Boolean)
 
     roles = relationship("Role", back_populates="user")
 
@@ -122,6 +123,7 @@ class Role(Base):
     school = Column(String)
     district = Column(String)
     county = Column(counties_enum)
+    service = Column(service_enum)
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", back_populates="roles")

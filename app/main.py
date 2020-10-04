@@ -11,8 +11,8 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from routers import (auth, case, caseload, goal, iep, mandate, roles, school,
-                     student, users)
+from routers import (admin, auth, case, caseload, goal, iep, mandate, roles,
+                     school, student, users)
 from sqlalchemy.orm import Session
 
 logging.basicConfig(filename='main.log',
@@ -33,6 +33,7 @@ app.include_router(goal.router)
 app.include_router(case.router)
 app.include_router(caseload.router)
 app.include_router(auth.router)
+app.include_router(admin.router)
 
 
 @lru_cache()
