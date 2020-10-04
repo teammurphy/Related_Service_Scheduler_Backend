@@ -2,7 +2,22 @@ import logging
 
 import models
 import schemas
+from custom_exceptions import InvaldEntryException
 from sqlalchemy.orm import Session
+
+from . import crud_base
+
+
+def check_role_inputs(role: schemas.RoleCreate):
+    if role.name not in crud_base.names:
+        raise InvaldEntryException(
+            entered=role.name, allowed=crud_base.names)
+    if role.county not in crud_base.counties:
+        raise InvaldEntryException(
+            entered=role.county, allowed=crud_base.counties)
+    if role.service not in crud_base.services:
+        raise InvaldEntryException(
+            entered=role.service, allowed=crud_base.services)
 
 
 def get_role(db: Session, role_id: int):
@@ -10,6 +25,7 @@ def get_role(db: Session, role_id: int):
 
 
 def create_role(db: Session, role: schemas.RoleCreate):
+    check_role_inputs(role)
     db_role = models.Role()
     [setattr(db_role, i[0], i[1]) for i in role]
     db.add(db_role)
@@ -29,6 +45,7 @@ def delete_role(db: Session, role_id: int):
 
 
 def update_role(db: Session, role_id: int, updated_role: schemas.RoleCreate):
+    check_role_inputs(updated_role)
     db_role = get_role(db, role_id)
     if db_role is None:
         return False

@@ -1,11 +1,10 @@
-
 import logging
-import test
 from functools import lru_cache
 from typing import List
 
 import config
 import crud
+import custom_exceptions
 import models
 import schemas
 from database import engine, get_db
@@ -44,16 +43,6 @@ def get_settings():
     return config.Settings()
 
 
-@app.exception_handler(test.InvaldEntryException)
-async def wrong_county_exception_handler(request: Request, exc: test.InvaldEntryException):
-    return JSONResponse(
-        status_code=418,
-        content={
-            "message": f"Invlaid entry '{exc.entered}' not in allowed {exc.allowed}"},
-
-    )
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -61,3 +50,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(custom_exceptions.InvaldEntryException)
+async def wrong_county_exception_handler(request: Request, exc: custom_exceptions.InvaldEntryException):
+    return JSONResponse(
+        status_code=418,
+        content={
+            "message": f"Invlaid entry '{exc.entered}' not in allowed {exc.allowed}"},
+
+    )
