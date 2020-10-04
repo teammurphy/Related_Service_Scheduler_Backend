@@ -13,7 +13,7 @@ class RoleBase(BaseModel):
 
 
 class RoleCreate(RoleBase):
-    user_id: int
+    user_id: Optional[int]
 
 
 class Role(RoleBase):
