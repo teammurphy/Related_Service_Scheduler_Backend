@@ -22,7 +22,7 @@ def admin_read_all_users(current_user: user_schema.User = Security(get_current_a
 
 
 @router.post("/admin/{user_id}/role", tags=["admin"])
-def admin_add_role_to_user(role: role_schema.RoleAddToUser, user_id: int, current_user: user_schema.User = Security(get_current_active_user, scopes=["admin"]), db: Session = Depends(get_db)):
+def admin_add_role_to_user(role: role_schema.RoleCreate, user_id: int, current_user: user_schema.User = Security(get_current_active_user, scopes=["admin"]), db: Session = Depends(get_db)):
     # TODO: make sure user exists
     role.user_id = user_id
     return crud.role.create_role(db=db, role=role)
