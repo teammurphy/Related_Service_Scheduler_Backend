@@ -1,4 +1,6 @@
+
 import logging
+import test
 from functools import lru_cache
 from typing import List
 
@@ -7,8 +9,9 @@ import crud
 import models
 import schemas
 from database import engine, get_db
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from routers import (admin, auth, case, caseload, goal, iep, mandate, roles,
@@ -39,6 +42,16 @@ app.include_router(admin.router)
 @lru_cache()
 def get_settings():
     return config.Settings()
+
+
+@app.exception_handler(test.InvaldEntryException)
+async def wrong_county_exception_handler(request: Request, exc: test.InvaldEntryException):
+    return JSONResponse(
+        status_code=418,
+        content={
+            "message": f"Invlaid entry '{exc.entered}' not in allowed {exc.allowed}"},
+
+    )
 
 
 app.add_middleware(

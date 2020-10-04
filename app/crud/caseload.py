@@ -1,4 +1,5 @@
 import logging
+from test import InvaldEntryException
 
 import models
 import schemas
@@ -14,7 +15,8 @@ def get_caseload(db: Session, caseload_id: int):
 def create_caseload(db: Session, caseload: schemas.CaseloadCreate):
     db_caseload = models.Caseload()
     if caseload.service not in crud_base.services:
-        logging.info('service not allowed')
+        raise InvaldEntryException(
+            entered=caseload.service, allowed=crud_base.services)
     [setattr(db_caseload, i[0], i[1]) for i in caseload]
     db.add(db_caseload)
     db.commit()
