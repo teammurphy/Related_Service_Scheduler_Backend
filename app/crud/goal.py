@@ -1,7 +1,7 @@
 import logging
 
 import models
-import schemas
+from schemas import goal_schema
 from sqlalchemy.orm import Session
 
 
@@ -9,7 +9,7 @@ def get_goal(db: Session, goal_id: int):
     return db.query(models.Goal).filter(models.Goal.id == goal_id).first()
 
 
-def create_goal(db: Session, goal: schemas.GoalCreate):
+def create_goal(db: Session, goal: goal_schema.GoalCreate):
     db_goal = models.Goal()
     [setattr(db_goal, i[0], i[1]) for i in goal]
 
@@ -29,14 +29,14 @@ def delete_goal(db: Session, goal_id: int):
         return False
 
 
-def update_goal(db: Session, goal_id: int, updated_goal: schemas.GoalCreate):
+def update_goal(db: Session, goal_id: int, updated_goal: goal_schema.GoalCreate):
     db_goal = get_goal(db, goal_id)
     if db_goal is None:
         return False
     return update_object(db, db_goal, updated_goal)
 
 
-def update_goal(db: Session, goal_id: int, updated_goal: schemas.GoalCreate):
+def update_goal(db: Session, goal_id: int, updated_goal: goal_schema.GoalCreate):
     db_goal = get_goal(db, goal_id)
     if db_goal is None:
         return False

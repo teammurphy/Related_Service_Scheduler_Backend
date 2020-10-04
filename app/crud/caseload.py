@@ -1,14 +1,14 @@
 import logging
 
 import models
-import schemas
 from custom_exceptions import InvaldEntryException
+from schemas import caseload_schema
 from sqlalchemy.orm import Session
 
 from . import crud_base
 
 
-def check_caseload_inputs(caseload: schemas.CaseloadCreate):
+def check_caseload_inputs(caseload: caseload_schema.CaseloadCreate):
     if caseload.service not in crud_base.services:
         raise InvaldEntryException(
             entered=caseload.service, allowed=crud_base.services)
@@ -18,7 +18,7 @@ def get_caseload(db: Session, caseload_id: int):
     return db.query(models.Caseload).filter(models.Caseload.id == caseload_id).first()
 
 
-def create_caseload(db: Session, caseload: schemas.CaseloadCreate):
+def create_caseload(db: Session, caseload: caseload_schema.CaseloadCreate):
     check_caseload_inputs(caseload)
     db_caseload = models.Caseload()
     [setattr(db_caseload, i[0], i[1]) for i in caseload]
@@ -38,7 +38,7 @@ def delete_caseload(db: Session, caseload_id: int):
         return False
 
 
-def update_caseload(db: Session, caseload_id: int, updated_caseload: schemas.CaseloadCreate):
+def update_caseload(db: Session, caseload_id: int, updated_caseload: caseload_schema.CaseloadCreate):
     check_caseload_inputs(caseload)
     db_caseload = get_caseload(db, caseload_id)
     if db_caseload is None:

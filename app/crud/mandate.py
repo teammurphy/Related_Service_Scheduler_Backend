@@ -1,14 +1,14 @@
 import logging
 
 import models
-import schemas
 from custom_exceptions import InvaldEntryException
+from schemas import mandate_schema
 from sqlalchemy.orm import Session
 
 from . import crud_base
 
 
-def check_mandate_inputs(mandate: schemas.MandateCreate):
+def check_mandate_inputs(mandate: mandate_schema.MandateCreate):
     if mandate.service not in crud_base.services:
         raise InvaldEntryException(
             entered=mandate.service, allowed=crud_base.services)
@@ -21,7 +21,7 @@ def get_mandate(db: Session, mandate_id: int):
     return db.query(models.Mandate).filter(models.Mandate.id == mandate_id).first()
 
 
-def create_mandate(db: Session, mandate: schemas.MandateCreate):
+def create_mandate(db: Session, mandate: mandate_schema.MandateCreate):
     check_mandate_inputs(mandate)
 
     db_mandate = models.Mandate()
@@ -42,7 +42,7 @@ def delete_mandate(db: Session, mandate_id: int):
         return False
 
 
-def update_mandate(db: Session, mandate_id: int, updated_mandate: schemas.MandateCreate):
+def update_mandate(db: Session, mandate_id: int, updated_mandate: mandate_schema.MandateCreate):
     check_mandate_inputs(update_mandate)
     db_mandate = get_mandate(db, mandate_id)
     if db_mandate is None:

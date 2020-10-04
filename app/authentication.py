@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import crud.user
-import schemas
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Security, status
 from fastapi.security import (OAuth2PasswordBearer, OAuth2PasswordRequestForm,
@@ -11,6 +10,7 @@ from fastapi.security import (OAuth2PasswordBearer, OAuth2PasswordRequestForm,
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import ValidationError
+from schemas import user_schema
 from sqlalchemy.orm import Session
 
 SECRET_KEY = os.environ["secret_key"]
@@ -84,13 +84,13 @@ async def get_current_user(security_scopes: SecurityScopes, token: str = Depends
     return user
 
 
-async def get_current_active_user(current_user: schemas.User = Security(get_current_user, scopes=["me"])):
+async def get_current_active_user(current_user: user_schema.User = Security(get_current_user, scopes=["me"])):
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 
-def get_scopes_from_db(user: schemas.User):
+def get_scopes_from_db(user: user_schema.User):
     result = ['me']
     roles = user.roles
     [result.append(role.name) for role in roles]

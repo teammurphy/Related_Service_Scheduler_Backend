@@ -1,7 +1,7 @@
 import logging
 
 import models
-import schemas
+from schemas import student_schema
 from sqlalchemy.orm import Session
 
 
@@ -15,7 +15,7 @@ def get_all_students(db: Session):
     return db.query(models.Student).all()
 
 
-def create_student(db: Session, student: schemas.StudentCreate):
+def create_student(db: Session, student: student_schema.StudentCreate):
     db_student = models.Student()
     [setattr(db_student, i[0], i[1]) for i in student]
     db.add(db_student)
@@ -34,7 +34,7 @@ def delete_student(db: Session, student_id: int):
         return False
 
 
-def update_student(db: Session, student_id: int, updated_student: schemas.StudentCreate):
+def update_student(db: Session, student_id: int, updated_student: student_schema.StudentCreate):
     db_student = get_student(db, student_id)
     if db_student is None:
         return False

@@ -2,20 +2,20 @@ from typing import List
 
 import crud.caseload
 import models
-import schemas
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
+from schemas import caseload_schema
 from sqlalchemy.orm import Session
 
 router = APIRouter()
 
 
 @router.post("/caseload", tags=["caseload"])
-def create_caseload(caseload: schemas.CaseloadCreate, db: Session = Depends(get_db)):
+def create_caseload(caseload: caseload_schema.CaseloadCreate, db: Session = Depends(get_db)):
     return crud.caseload.create_caseload(db=db, caseload=caseload)
 
 
-@router.get("/caseload/{caseload_id}", response_model=schemas.Caseload, tags=["caseload"])
+@router.get("/caseload/{caseload_id}", response_model=caseload_schema.Caseload, tags=["caseload"])
 def read_caseload(caseload_id: int, db: Session = Depends(get_db)):
     caseload = crud, caseload.get_caseload(db, caseload_id=caseload_id)
     if caseload is None:
@@ -24,7 +24,7 @@ def read_caseload(caseload_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/caseload/{caseload_id}", tags=["caseload"])
-def update_caseload(updated_caseload: schemas.CaseloadCreate, caseload_id: int, db: Session = Depends(get_db)):
+def update_caseload(updated_caseload: caseload_schema.CaseloadCreate, caseload_id: int, db: Session = Depends(get_db)):
     updated = crud.caseload.update_caseload(
         db=db, caseload_id=caseload_id, updated_caseload=updated_caseload)
     if update is False:

@@ -3,19 +3,19 @@ from datetime import datetime, timedelta
 
 import authentication
 import crud.user
-import schemas
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Security, status
 from fastapi.security import (OAuth2PasswordBearer, OAuth2PasswordRequestForm,
                               SecurityScopes)
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from schemas import token_schema, user_schema
 from sqlalchemy.orm import Session
 
 router = APIRouter()
 
 
-@router.post("/token", response_model=schemas.Token, tags=['auth'])
+@router.post("/token", response_model=token_schema.Token, tags=['auth'])
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authentication.authenticate_user(
         db, form_data.username, form_data.password)
@@ -36,5 +36,5 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 
 @router.get("/users/me", tags=["auth"])
-async def read_users_me(current_user: schemas.User = Depends(authentication.get_current_user)):
+async def read_users_me(current_user: user_schema.User = Depends(authentication.get_current_user)):
     return current_user

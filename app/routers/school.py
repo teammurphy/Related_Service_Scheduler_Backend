@@ -2,20 +2,20 @@ from typing import List
 
 import crud.school
 import models
-import schemas
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
+from schemas import school_schema
 from sqlalchemy.orm import Session
 
 router = APIRouter()
 
 
 @router.post("/school", tags=["school"])
-def create_school(school: schemas.SchoolCreate, db: Session = Depends(get_db)):
+def create_school(school: school_schema.SchoolCreate, db: Session = Depends(get_db)):
     return crud.school.create_school(db=db, school=school)
 
 
-@router.get("/school/{school_id}", response_model=schemas.School, tags=["school"])
+@router.get("/school/{school_id}", response_model=school_schema.School, tags=["school"])
 def read_school(school_id: str, db: Session = Depends(get_db)):
     school = crud.school.get_school(db, school_id=school_id)
     if school is None:
@@ -24,7 +24,7 @@ def read_school(school_id: str, db: Session = Depends(get_db)):
 
 
 @router.put("/school/{school_id}", tags=["school"])
-def update_school(school: schemas.SchoolCreate, school_id: str, db: Session = Depends(get_db)):
+def update_school(school: school_schema.SchoolCreate, school_id: str, db: Session = Depends(get_db)):
     updated = crud.school.update_school(
         db=db, school_id=school_id, school=school)
     if updated is False:

@@ -2,15 +2,15 @@ from typing import List
 
 import crud.user
 import models
-import schemas
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
+from schemas import role_schema, user_schema
 from sqlalchemy.orm import Session
 
 router = APIRouter()
 
 
-@router.get("/user/{username}", response_model=schemas.User, tags=["users"])
+@router.get("/user/{username}", response_model=user_schema.User, tags=["users"])
 def read_user(username: str, db: Session = Depends(get_db)):
     user = crud.user.get_user_by_username(db, username)
     if user is None:
@@ -18,7 +18,7 @@ def read_user(username: str, db: Session = Depends(get_db)):
     return user
 
 
-@router.get("/users", response_model=List[schemas.User], tags=["users"])
+@router.get("/users", response_model=List[user_schema.User], tags=["users"])
 def read_all_users(db: Session = Depends(get_db)):
     users = crud.user.get_all_users(db)
     print(users)
@@ -28,12 +28,12 @@ def read_all_users(db: Session = Depends(get_db)):
 
 
 @router.post("/user", tags=["users"])
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def create_user(user: user_schema.UserCreate, db: Session = Depends(get_db)):
     return crud.user.create_user(db=db, user=user)
 
 
 @router.post("/users/{user_id}/role", tags=["users"])
-def create_role_user(role: schemas.RoleCreate, user_id: int, db: Session = Depends(get_db)):
+def create_role_user(role: role_schema.RoleCreate, user_id: int, db: Session = Depends(get_db)):
     role.user_id = user_id
     return crud.user.create_role(db=db, role=role)
 

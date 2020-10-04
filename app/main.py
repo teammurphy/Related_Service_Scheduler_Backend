@@ -3,10 +3,8 @@ from functools import lru_cache
 from typing import List
 
 import config
-import crud
 import custom_exceptions
 import models
-import schemas
 from database import engine, get_db
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware

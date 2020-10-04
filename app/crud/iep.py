@@ -1,7 +1,7 @@
 import logging
 
 import models
-import schemas
+from schemas import iep_schema
 from sqlalchemy.orm import Session
 
 
@@ -9,7 +9,7 @@ def get_iep(db: Session, iep_id: int):
     return db.query(models.Iep).filter(models.Iep.id == iep_id).first()
 
 
-def create_iep(db: Session, iep: schemas.IepCreate):
+def create_iep(db: Session, iep: iep_schema.IepCreate):
     db_iep = models.Iep()
     [setattr(db_iep, i[0], i[1]) for i in iep]
     db.add(db_iep)
@@ -28,7 +28,7 @@ def delete_iep(db: Session, iep_id: int):
         return False
 
 
-def update_iep(db: Session, iep_id: int, updated_iep: schemas.IepCreate):
+def update_iep(db: Session, iep_id: int, updated_iep: iep_schema.IepCreate):
     db_iep = get_iep(db, iep_id)
     if db_iep is None:
         return False

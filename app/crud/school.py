@@ -1,8 +1,8 @@
 import logging
 
 import models
-import schemas
 from custom_exceptions import InvaldEntryException
+from schemas import school_schema
 from sqlalchemy.orm import Session
 
 from . import crud_base
@@ -12,7 +12,7 @@ def get_school(db: Session, school_id: str):
     return db.query(models.School).filter(models.School.id == school_id).first()
 
 
-def create_school(db: Session, school: schemas.SchoolCreate):
+def create_school(db: Session, school: school_schema.SchoolCreate):
     if school.county not in crud_base.counties:
         raise InvaldEntryException(
             entered=school.county, allowed=crud_base.counties)
@@ -34,7 +34,7 @@ def delete_school(db: Session, school_id: str):
         return False
 
 
-def update_school(db: Session, school_id: int, updated_school: schemas.SchoolCreate):
+def update_school(db: Session, school_id: int, updated_school: school_schema.SchoolCreate):
     db_school = get_school(db, school_id)
     if db_school is None:
         return False

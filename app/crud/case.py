@@ -1,7 +1,7 @@
 import logging
 
 import models
-import schemas
+from schemas import case_schema
 from sqlalchemy.orm import Session
 
 
@@ -13,7 +13,7 @@ def get_all_cases(db: Session):
     return db.query(models.Case).all()
 
 
-def create_case(db: Session, case: schemas.CaseCreate):
+def create_case(db: Session, case: case_schema.CaseCreate):
     db_case = models.Case()
     [setattr(db_case, i[0], i[1]) for i in case]
     db.add(db_case)
@@ -32,7 +32,7 @@ def delete_case(db: Session, case_id: int):
         return False
 
 
-def update_caseload(db: Session, case_id: int, updated_case: schemas.CaseCreate):
+def update_caseload(db: Session, case_id: int, updated_case: case_schema.CaseCreate):
     db_case = get_caseload(db, case_id)
     if db_case is None:
         return False

@@ -1,14 +1,14 @@
 import logging
 
 import models
-import schemas
 from custom_exceptions import InvaldEntryException
+from schemas import role_schema
 from sqlalchemy.orm import Session
 
 from . import crud_base
 
 
-def check_role_inputs(role: schemas.RoleCreate):
+def check_role_inputs(role: role_schema.RoleCreate):
     if role.name not in crud_base.names:
         raise InvaldEntryException(
             entered=role.name, allowed=crud_base.names)
@@ -24,7 +24,7 @@ def get_role(db: Session, role_id: int):
     return db.query(models.Role).filter(models.Role.id == role_id).first()
 
 
-def create_role(db: Session, role: schemas.RoleCreate):
+def create_role(db: Session, role: role_schema.RoleCreate):
     check_role_inputs(role)
     db_role = models.Role()
     [setattr(db_role, i[0], i[1]) for i in role]
@@ -44,7 +44,7 @@ def delete_role(db: Session, role_id: int):
         return False
 
 
-def update_role(db: Session, role_id: int, updated_role: schemas.RoleCreate):
+def update_role(db: Session, role_id: int, updated_role: role_schema.RoleCreate):
     check_role_inputs(updated_role)
     db_role = get_role(db, role_id)
     if db_role is None:
