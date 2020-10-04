@@ -10,7 +10,7 @@ from fastapi.security import (OAuth2PasswordBearer, OAuth2PasswordRequestForm,
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import ValidationError
-from schemas import user_schema
+from schemas import token_schema, user_schema
 from sqlalchemy.orm import Session
 
 SECRET_KEY = os.environ["secret_key"]
@@ -67,7 +67,8 @@ async def get_current_user(security_scopes: SecurityScopes, token: str = Depends
         if username is None:
             raise credentials_exception
         token_scopes = payload.get("scopes", [])
-        token_data = schemas.TokenData(scopes=token_scopes, username=username)
+        token_data = token_schema.TokenData(
+            scopes=token_scopes, username=username)
     except (JWTError, ValidationError):
         raise credentials_exception
     user = crud.user.get_user_by_username(db, username=token_data.username)
