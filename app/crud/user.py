@@ -3,11 +3,16 @@ import logging
 import authentication
 import models
 from schemas import user_schema
+from sqlalchemy import exists
 from sqlalchemy.orm import Session
 
 
 def get_user_by_username(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
+
+
+def check_user_exist_by_id(db: Session, user_id: int):
+    return db.query(exists().where(models.User.id == user_id)).scalar()
 
 
 def get_user(db: Session, user_id: int):
