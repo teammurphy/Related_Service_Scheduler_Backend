@@ -5,8 +5,12 @@ from schemas import student_schema
 from sqlalchemy.orm import Session
 
 
-def get_student(db: Session, student_id: id):
+def get_student(db: Session, student_id: int):
     return db.query(models.Student).filter(models.Student.id == student_id).first()
+
+
+def get_students_by_school_id(db: Session, school_id: str):
+    return db.query(models.Student).filter(models.Student.school_id == school_id).all()
 
 
 def get_all_students(db: Session):
