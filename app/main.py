@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from routers import (admin, auth, case, caseload, goal, iep, mandate,
-                     providers, roles, school, student, users)
+                     providers, roles, school, student, supervisors, users)
 from sqlalchemy.orm import Session
 
 logging.basicConfig(filename='main.log',
@@ -35,6 +35,7 @@ app.include_router(caseload.router)
 app.include_router(auth.router)
 app.include_router(admin.router)
 app.include_router(providers.router)
+app.include_router(supervisors.router)
 
 
 @lru_cache()

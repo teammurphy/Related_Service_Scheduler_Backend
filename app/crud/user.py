@@ -19,6 +19,10 @@ def get_all_users(db: Session):
     return db.query(models.User).all()
 
 
+def get_providers_by_district_and_service(db: Session, district: str, service: str):
+    return db.query(models.User).join(models.User.roles, aliased=True).filter_by(district=district, service=service).all()
+
+
 def create_user(db: Session, user: user_schema.UserCreate):
     hashed_password = authentication.get_password_hash(user.password)
     db_user = models.User(hashed_password=hashed_password, disabled=False)

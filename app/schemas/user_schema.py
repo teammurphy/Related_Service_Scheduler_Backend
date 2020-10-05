@@ -36,5 +36,12 @@ class UserResponse(UserBase):
         orm_mode = True
 
 
+class UserThin(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
 class UserInDB(User):
     hashed_password: str
