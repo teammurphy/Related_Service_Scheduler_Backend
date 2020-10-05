@@ -26,3 +26,11 @@ def admin_add_role_to_user(role: role_schema.RoleCreate, user_id: int, current_u
     # TODO: make sure user exists
     role.user_id = user_id
     return crud.role.create_role(db=db, role=role)
+
+
+@router.delete("/admin/role/{role_id}", tags=["admin"])
+def delete_role(role_id: int, current_user: user_schema.User = Security(get_current_active_user, scopes=["admin"]), db: Session = Depends(get_db)):
+    deleted = crud.role.delete_role(db=db, role_id=role_id)
+    if deleted is False:
+        raise HTTPException(status_code=404, detail="Role not found")
+    return role_id

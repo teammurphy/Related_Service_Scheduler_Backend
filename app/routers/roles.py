@@ -24,14 +24,6 @@ def create_role(role: role_schema.RoleCreate, db: Session = Depends(get_db)):
     return crud.role.create_role(db=db, role=role)
 
 
-@router.delete("/role/{role_id}",  tags=["role"])
-def delete_role(role_id: int, db: Session = Depends(get_db)):
-    deleted = crud.role.delete_role(db=db, role_id=role_id)
-    if deleted is False:
-        raise HTTPException(status_code=404, detail="Role not found")
-    return role_id
-
-
 @router.put("/role/{role_id}", tags=["role"])
 def update_role(updated_role: role_schema.RoleCreate, role_id: int, db: Session = Depends(get_db)):
     updated = crud.role.update_role(
