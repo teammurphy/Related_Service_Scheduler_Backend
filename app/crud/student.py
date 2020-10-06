@@ -19,6 +19,10 @@ def get_all_students(db: Session):
     return db.query(models.Student).all()
 
 
+def get_student_by_caseload(db: Session, caseload_id: int):
+    return db.query(models.Student, models.Case.id).join(models.Student.cases, aliased=True).filter_by(caseload_id=caseload_id).all()
+
+
 def create_student(db: Session, student: student_schema.StudentCreate):
     db_student = models.Student()
     [setattr(db_student, i[0], i[1]) for i in student]

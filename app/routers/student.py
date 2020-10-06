@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 import crud.student
@@ -24,6 +25,24 @@ def read_all_students(db: Session = Depends(get_db)):
     if not students:
         raise HTTPException(status_code=404, detail="Students not found")
     return students
+
+
+@router.get("/students/{caseload_id}", response_model=List[student_schema.StudentCase], tags=["student"])
+def read_students_by_caseload(caseload_id: int, db: Session = Depends(get_db)):
+    result = []
+    li_tup_students_caseid = crud.student.get_student_by_caseload(
+        db, caseload_id)
+
+    if not li_tup_students_caseid:
+        raise HTTPException(status_code=404, detail="Students not found")
+
+    def add_case_id_to_student(tup):
+        setattr(tup[0], 'case_id', tup[1])
+        return tup[0]
+
+    result = list(map(add_case_id_to_student, li_tup_students_caseid))
+
+    return result
 
 
 @router.post("/student", tags=["student"])

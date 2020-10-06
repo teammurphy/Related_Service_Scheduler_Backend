@@ -13,6 +13,9 @@ class StudentBase(BaseModel):
     birthdate: date
     grade: str
 
+    class Config:
+        orm_mode = True
+
 
 class StudentCreate(StudentBase):
     school_id: str
@@ -22,5 +25,8 @@ class Student(StudentBase):
     id: int
     ieps: List[Iep] = []
 
-    class Config:
-        orm_mode = True
+
+class StudentCase(StudentBase):
+    id: int
+    school_id: str
+    case_id: int

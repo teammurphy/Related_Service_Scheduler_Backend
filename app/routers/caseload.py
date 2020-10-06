@@ -17,7 +17,7 @@ def create_caseload(caseload: caseload_schema.CaseloadCreate, db: Session = Depe
 
 @router.get("/caseload/{caseload_id}", response_model=caseload_schema.Caseload, tags=["caseload"])
 def read_caseload(caseload_id: int, db: Session = Depends(get_db)):
-    caseload = crud, caseload.get_caseload(db, caseload_id=caseload_id)
+    caseload = crud.caseload.get_caseload(db, caseload_id=caseload_id)
     if caseload is None:
         raise HTTPException(status_code=404, detail="Caseload not found")
     return caseload
