@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from .caseload_schema import Caseload
+from .caseload_schema import Caseload, CaseloadLogin
 from .role_schema import Role
 
 
@@ -30,6 +30,7 @@ class User(UserBase):
 class UserResponse(UserBase):
     id: int
     roles: List[Role] = []
+    caseloads: List[CaseloadLogin] = []
     disabled: bool
 
     class Config:

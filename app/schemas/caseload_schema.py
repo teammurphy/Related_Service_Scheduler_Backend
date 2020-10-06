@@ -20,3 +20,10 @@ class Caseload(CaseloadBase):
 
     class Config:
         orm_mode = True
+
+
+class CaseloadLogin(CaseloadBase):
+    id: int
+
+    class Config:
+        orm_mode = True

@@ -32,6 +32,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={"sub": user.username, "scopes": scopes},
         expires_delta=access_token_expires
     )
+    logging.info(user)
     return {"access_token": access_token, "token_type": "bearer", "user": user}
 
 
