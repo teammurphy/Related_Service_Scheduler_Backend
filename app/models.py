@@ -59,7 +59,7 @@ class Iep(Base):
     start_date = Column(Date)
     end_date = Column(Date)
 
-    student_id = Column(Integer, ForeignKey('student.id'))
+    student_id = Column(Integer, ForeignKey('student.id', ondelete="CASCADE"))
     student = relationship("Student", back_populates="ieps")
 
     mandates = relationship('Mandate', back_populates='iep')
@@ -79,7 +79,7 @@ class Mandate(Base):
     frequency = Column(Integer)
     interval = Column(Integer)
 
-    iep_id = Column(Integer, ForeignKey('iep.id'))
+    iep_id = Column(Integer, ForeignKey('iep.id', ondelete="CASCADE"))
     iep = relationship("Iep", back_populates="mandates")
 
 
@@ -93,7 +93,7 @@ class Goal(Base):
     method = Column(String)
     schedule = Column(String)
 
-    iep_id = Column(Integer, ForeignKey('iep.id'))
+    iep_id = Column(Integer, ForeignKey('iep.id', ondelete="CASCADE"))
     iep = relationship("Iep", back_populates="goals")
 
 
@@ -108,7 +108,7 @@ class Role(Base):
     county = Column(String)
     service = Column(String)
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id', ondelete="CASCADE"))
     user = relationship("User", back_populates="roles")
 
 
@@ -120,7 +120,7 @@ class Caseload(Base):
     title = Column(String)
     service = Column(String)
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id', ondelete="CASCADE"))
     user = relationship("User", back_populates="caseloads")
 
     cases = relationship("Case", back_populates="caseload")
@@ -131,8 +131,9 @@ class Case(Base):
 
     id = Column(Integer, primary_key=True)
 
-    caseload_id = Column(Integer, ForeignKey('caseload.id'))
+    caseload_id = Column(Integer, ForeignKey(
+        'caseload.id', ondelete="CASCADE"))
     caseload = relationship("Caseload", back_populates="cases")
 
-    student_id = Column(Integer, ForeignKey('student.id'))
+    student_id = Column(Integer, ForeignKey('student.id', ondelete="CASCADE"))
     student = relationship("Student", back_populates="cases")
