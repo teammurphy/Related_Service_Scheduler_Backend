@@ -23,6 +23,14 @@ def read_caseload(caseload_id: int, db: Session = Depends(get_db)):
     return caseload
 
 
+@router.get("/caseloads/user/{user_id}", response_model=List[caseload_schema.CaseloadThin], tags=["caseload"])
+def read_caseload_by_user(user_id: int, db: Session = Depends(get_db)):
+    caseloads = crud.caseload.get_caseloads_by_user_id(db, user_id=user_id)
+    if caseloads is None:
+        raise HTTPException(status_code=404, detail="Caseloads not found")
+    return caseloads
+
+
 @router.put("/caseload/{caseload_id}", tags=["caseload"])
 def update_caseload(updated_caseload: caseload_schema.CaseloadCreate, caseload_id: int, db: Session = Depends(get_db)):
     updated = crud.caseload.update_caseload(

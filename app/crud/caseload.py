@@ -18,6 +18,10 @@ def get_caseload(db: Session, caseload_id: int):
     return db.query(models.Caseload).filter(models.Caseload.id == caseload_id).first()
 
 
+def get_caseloads_by_user_id(db: Session, user_id: int):
+    return db.query(models.Caseload).filter(models.Caseload.user_id == user_id).all()
+
+
 def create_caseload(db: Session, caseload: caseload_schema.CaseloadCreate):
     check_caseload_inputs(caseload)
     db_caseload = models.Caseload()

@@ -22,7 +22,7 @@ class Caseload(CaseloadBase):
         orm_mode = True
 
 
-class CaseloadLogin(CaseloadBase):
+class CaseloadThin(CaseloadBase):
     id: int
 
     class Config:
