@@ -7,6 +7,7 @@ from .student_schema import Student
 
 
 class SchoolBase(BaseModel):
+    dbn: str
     district: str
     county: str
     name: str
