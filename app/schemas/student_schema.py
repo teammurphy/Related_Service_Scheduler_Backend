@@ -18,7 +18,7 @@ class StudentBase(BaseModel):
 
 
 class StudentCreate(StudentBase):
-    school_id: str
+    school_id: int
 
 
 class Student(StudentBase):
@@ -28,5 +28,5 @@ class Student(StudentBase):
 
 class StudentCase(StudentBase):
     id: int
-    school_id: str
+    school_id: int
     case_id: int

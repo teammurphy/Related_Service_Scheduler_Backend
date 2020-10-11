@@ -16,7 +16,7 @@ def create_school(school: school_schema.SchoolCreate, db: Session = Depends(get_
 
 
 @router.get("/school/{school_id}", response_model=school_schema.School, tags=["school"])
-def read_school(school_id: str, db: Session = Depends(get_db)):
+def read_school(school_id: int, db: Session = Depends(get_db)):
     school = crud.school.get_school(db, school_id=school_id)
     if school is None:
         raise HTTPException(status_code=404, detail="School not found")
@@ -24,7 +24,7 @@ def read_school(school_id: str, db: Session = Depends(get_db)):
 
 
 @router.put("/school/{school_id}", tags=["school"])
-def update_school(school: school_schema.SchoolCreate, school_id: str, db: Session = Depends(get_db)):
+def update_school(school: school_schema.SchoolCreate, school_id: int, db: Session = Depends(get_db)):
     updated = crud.school.update_school(
         db=db, school_id=school_id, school=school)
     if updated is False:
@@ -33,7 +33,7 @@ def update_school(school: school_schema.SchoolCreate, school_id: str, db: Sessio
 
 
 @router.delete("/school/{school_id}", tags=["school"])
-def delete_school(school_id: str, db: Session = Depends(get_db)):
+def delete_school(school_id: int, db: Session = Depends(get_db)):
     deleted = crud.school.delete_school(db=db, school_id=school_id)
     if deleted is False:
         raise HTTPException(status_code=404, detail="School not found")

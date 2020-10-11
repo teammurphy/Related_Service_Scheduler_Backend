@@ -10,7 +10,7 @@ class SchoolBase(BaseModel):
     district: str
     county: str
     name: str
-    id: str
+    id: int
 
 
 class SchoolCreate(SchoolBase):

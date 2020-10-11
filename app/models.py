@@ -23,7 +23,8 @@ class User(Base):
 class School(Base):
     __tablename__ = "school"
 
-    id = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    dbn = Column(String)
 
     district = Column(String)
     county = Column(String)
@@ -43,7 +44,7 @@ class Student(Base):
     birthdate = Column(Date)
     grade = Column(String)
 
-    school_id = Column(String, ForeignKey('school.id'))
+    school_id = Column(Integer, ForeignKey('school.id'))
     school = relationship("School", back_populates="students")
 
     ieps = relationship("Iep", back_populates="student")
