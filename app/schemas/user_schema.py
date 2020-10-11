@@ -12,6 +12,9 @@ class UserBase(BaseModel):
     #last_name: str
     email: str
 
+    class Config:
+        orm_mode = True
+
 
 class UserCreate(UserBase):
     password: str
@@ -23,25 +26,15 @@ class User(UserBase):
     caseloads: List[Caseload] = []
     disabled: bool
 
-    class Config:
-        orm_mode = True
-
 
 class UserResponse(UserBase):
     id: int
     roles: List[Role] = []
-    caseloads: List[CaseloadThin] = []
     disabled: bool
-
-    class Config:
-        orm_mode = True
 
 
 class UserThin(UserBase):
     id: int
-
-    class Config:
-        orm_mode = True
 
 
 class UserInDB(User):
