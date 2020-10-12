@@ -30,6 +30,8 @@ class School(Base):
     county = Column(String)
     name = Column(String)
 
+    roles = relationship("Role", back_populates="school")
+
     students = relationship("Student", back_populates="school")
 
 
@@ -104,10 +106,13 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
 
     name = Column(String)
-    school = Column(Integer)
+
     district = Column(String)
     county = Column(String)
     service = Column(String)
+
+    school_id = Column(Integer, ForeignKey('school.id', ondelete="CASCADE"))
+    school = relationship("School", back_populates="roles")
 
     user_id = Column(Integer, ForeignKey('user.id', ondelete="CASCADE"))
     user = relationship("User", back_populates="roles")
