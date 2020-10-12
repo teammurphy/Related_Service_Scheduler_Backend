@@ -1,10 +1,10 @@
 import logging
-from typing import List
+from typing import List, Optional
 
 import crud.student
 import models
 from database import get_db
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from schemas import student_schema
 from sqlalchemy.orm import Session
 
@@ -43,6 +43,14 @@ def read_students_by_caseload(caseload_id: int, db: Session = Depends(get_db)):
     result = list(map(add_case_id_to_student, li_tup_students_caseid))
 
     return result
+
+
+@router.get("/students/schools", response_model=List[student_schema.StudentBase], tags=["student"])
+def read_students_by_school(school_id: Optional[List[int]] = Query(None), db: Session = Depends(get_db)):
+    students = crud.student.get_students_by_school_ids(db, school_id)
+    if not students:
+        raise HTTPException(status_code=404, detail="Students not found")
+    return students
 
 
 @router.post("/student", tags=["student"])

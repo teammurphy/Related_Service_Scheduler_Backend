@@ -7,7 +7,7 @@ from .iep_schema import Iep
 
 
 class StudentBase(BaseModel):
-    first_name: str
+    first_name: Optional[str] = None
     last_name: str
     osis: str
     birthdate: date
