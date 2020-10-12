@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class RoleBase(BaseModel):
     name: str
-    school: str
+    school: int
     district: str
     county: str
     service: str
