@@ -104,7 +104,7 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
 
     name = Column(String)
-    school = Column(String)
+    school = Column(Integer)
     district = Column(String)
     county = Column(String)
     service = Column(String)
