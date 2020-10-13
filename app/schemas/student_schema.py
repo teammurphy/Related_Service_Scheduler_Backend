@@ -30,3 +30,8 @@ class StudentThin(StudentBase):
     id: int
     school_id: int
     case_id: int
+
+
+class StudentWithFullName(StudentBase):
+    id: int
+    full_name: str

@@ -10,9 +10,9 @@ def get_student(db: Session, student_id: int):
     return db.query(models.Student).filter(models.Student.id == student_id).first()
 
 
-def get_students_by_school_ids(db: Session, school_ids: List[int]):
+def get_students_by_school_id(db: Session, school_id: int):
     return db.query(models.Student).filter(
-        models.Student.school_id.in_(school_ids)).all()
+        models.Student.school_id == school_id).all()
 
 
 def get_all_students(db: Session):

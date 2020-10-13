@@ -45,11 +45,19 @@ def read_students_by_caseload(caseload_id: int, db: Session = Depends(get_db)):
     return result
 
 
-@router.get("/students/schools", response_model=List[student_schema.StudentBase], tags=["student"])
-def read_students_by_school(school_id: Optional[List[int]] = Query(None), db: Session = Depends(get_db)):
-    students = crud.student.get_students_by_school_ids(db, school_id)
+@router.get("/students/schools/{school_id}", response_model=List[student_schema.StudentWithFullName], tags=["student"])
+def read_students_by_school(school_id: int, db: Session = Depends(get_db)):
+
+    students = crud.student.get_students_by_school_id(db, school_id)
     if not students:
         raise HTTPException(status_code=404, detail="Students not found")
+
+    def add_fullname(student_obj):
+        student_obj.full_name = f'{student_obj.first_name} {student_obj.last_name}'
+        return student_obj
+
+    students = list(map(add_fullname, students))
+
     return students
 
 

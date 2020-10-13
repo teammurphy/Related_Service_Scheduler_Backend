@@ -9,6 +9,7 @@ from . import crud_base
 
 
 def check_role_inputs(role: role_schema.RoleCreate):
+    # TODO: check that things can be none if supervisor or admin else require
     if role.name not in crud_base.names:
         raise InvaldEntryException(
             entered=role.name, allowed=crud_base.names)
