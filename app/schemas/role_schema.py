@@ -6,10 +6,10 @@ from pydantic import BaseModel
 
 class RoleBase(BaseModel):
     name: str
-    school: int
-    district: str
-    county: str
-    service: str
+    school_id: Optional[int]
+    district: Optional[str]
+    county: Optional[str]
+    service: Optional[str]
 
     class Config:
         orm_mode = True
