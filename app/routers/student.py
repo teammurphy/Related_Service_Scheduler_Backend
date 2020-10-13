@@ -45,7 +45,7 @@ def read_students_by_caseload(caseload_id: int, db: Session = Depends(get_db)):
     return result
 
 
-@router.get("/students/schools/{school_id}", response_model=List[student_schema.StudentWithFullName], tags=["student"])
+@router.get("/students/school/{school_id}", response_model=List[student_schema.StudentWithFullName], tags=["student"])
 def read_students_by_school(school_id: int, db: Session = Depends(get_db)):
 
     students = crud.student.get_students_by_school_id(db, school_id)
