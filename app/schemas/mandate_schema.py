@@ -19,3 +19,8 @@ class MandateCreate(MandateBase):
 
 class Mandate(MandateBase):
     id: int
+
+
+class MandateThin(MandateBase):
+    iep_id: int
+    id: int

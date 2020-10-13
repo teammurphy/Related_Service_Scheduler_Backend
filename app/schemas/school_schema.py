@@ -11,7 +11,6 @@ class SchoolBase(BaseModel):
     district: str
     county: str
     name: str
-    id: int
 
     class Config:
         orm_mode = True
@@ -22,4 +21,9 @@ class SchoolCreate(SchoolBase):
 
 
 class School(SchoolBase):
+    id: int
     students: List[Student] = []
+
+
+class SchoolThin(SchoolBase):
+    id: int

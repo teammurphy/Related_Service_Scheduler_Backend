@@ -27,7 +27,7 @@ def read_all_students(db: Session = Depends(get_db)):
     return students
 
 
-@router.get("/students/caseload/{caseload_id}", response_model=List[student_schema.StudentCase], tags=["student"])
+@router.get("/students/caseload/{caseload_id}", response_model=List[student_schema.StudentThin], tags=["student"])
 def read_students_by_caseload(caseload_id: int, db: Session = Depends(get_db)):
     result = []
     li_tup_students_caseid = crud.student.get_student_by_caseload(

@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
-@router.get("/admin/users", response_model=List[user_schema.UserResponse], tags=["admin"])
+@router.get("/admin/users", response_model=List[user_schema.UserWithRoles], tags=["admin"])
 def admin_read_all_users(current_user: user_schema.User = Security(get_current_active_user, scopes=["admin"]), db: Session = Depends(get_db)):
     users = crud.user.get_all_users(db)
     print(users)

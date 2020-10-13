@@ -18,7 +18,7 @@ def read_user(username: str, db: Session = Depends(get_db)):
     return user
 
 
-@router.get("/users", response_model=List[user_schema.User], tags=["users"])
+@router.get("/users", response_model=List[user_schema.UserThin], tags=["users"])
 def read_all_users(db: Session = Depends(get_db)):
     users = crud.user.get_all_users(db)
     if not users:

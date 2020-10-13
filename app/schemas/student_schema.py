@@ -26,7 +26,7 @@ class Student(StudentBase):
     ieps: List[Iep] = []
 
 
-class StudentCase(StudentBase):
+class StudentThin(StudentBase):
     id: int
     school_id: int
     case_id: int

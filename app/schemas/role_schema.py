@@ -25,3 +25,8 @@ class Role(RoleBase):
 
 class RoleAddToUser(RoleBase):
     pass
+
+
+class RoleThin(RoleBase):
+    user_id: int
+    id: int

@@ -27,7 +27,7 @@ class User(UserBase):
     disabled: bool
 
 
-class UserResponse(UserBase):
+class UserWithRoles(UserBase):
     id: int
     roles: List[Role] = []
     disabled: bool
@@ -35,7 +35,4 @@ class UserResponse(UserBase):
 
 class UserThin(UserBase):
     id: int
-
-
-class UserInDB(User):
-    hashed_password: str
+    disabled: bool

@@ -23,3 +23,8 @@ class Iep(IepBase):
     id: int
     mandates: List[Mandate] = []
     goals: List[Goal] = []
+
+
+class IepThin(IepBase):
+    student_id: int
+    id: int
