@@ -23,6 +23,14 @@ def read_school(school_id: int, db: Session = Depends(get_db)):
     return school
 
 
+@router.get("/schools/district/{district}", response_model=List[school_schema.SchoolBase], tags=["school"])
+def read_schools_by_district(district: str, db: Session = Depends(get_db)):
+    schools = crud.school.get_schools_by_district(db, district=district)
+    if schools is None:
+        raise HTTPException(status_code=404, detail="School not found")
+    return schools
+
+
 @router.put("/school/{school_id}", tags=["school"])
 def update_school(school: school_schema.SchoolCreate, school_id: int, db: Session = Depends(get_db)):
     updated = crud.school.update_school(

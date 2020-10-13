@@ -13,6 +13,9 @@ class SchoolBase(BaseModel):
     name: str
     id: int
 
+    class Config:
+        orm_mode = True
+
 
 class SchoolCreate(SchoolBase):
     pass
@@ -20,6 +23,3 @@ class SchoolCreate(SchoolBase):
 
 class School(SchoolBase):
     students: List[Student] = []
-
-    class Config:
-        orm_mode = True

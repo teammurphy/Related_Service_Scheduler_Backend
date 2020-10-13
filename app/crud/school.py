@@ -12,6 +12,10 @@ def get_school(db: Session, school_id: str):
     return db.query(models.School).filter(models.School.id == school_id).first()
 
 
+def get_schools_by_district(db: Session, district: str):
+    return db.query(models.School).filter(models.School.district == district).all()
+
+
 def create_school(db: Session, school: school_schema.SchoolCreate):
     if school.county not in crud_base.counties:
         raise InvaldEntryException(
