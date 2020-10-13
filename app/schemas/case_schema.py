@@ -5,6 +5,9 @@ class CaseBase(BaseModel):
     caseload_id: int
     student_id: int
 
+    class Config:
+        orm_mode = True
+
 
 class CaseCreate(CaseBase):
     pass
@@ -12,6 +15,3 @@ class CaseCreate(CaseBase):
 
 class Case(CaseBase):
     id: int
-
-    class Config:
-        orm_mode = True

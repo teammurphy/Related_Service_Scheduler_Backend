@@ -11,6 +11,9 @@ class RoleBase(BaseModel):
     county: str
     service: str
 
+    class Config:
+        orm_mode = True
+
 
 class RoleCreate(RoleBase):
     user_id: Optional[int]
@@ -18,9 +21,6 @@ class RoleCreate(RoleBase):
 
 class Role(RoleBase):
     id: int
-
-    class Config:
-        orm_mode = True
 
 
 class RoleAddToUser(RoleBase):

@@ -11,6 +11,9 @@ class IepBase(BaseModel):
     start_date: datetime
     end_date: datetime
 
+    class Config:
+        orm_mode = True
+
 
 class IepCreate(IepBase):
     student_id: int
@@ -20,6 +23,3 @@ class Iep(IepBase):
     id: int
     mandates: List[Mandate] = []
     goals: List[Goal] = []
-
-    class Config:
-        orm_mode = True

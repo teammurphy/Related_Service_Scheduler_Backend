@@ -7,6 +7,9 @@ class GoalBase(BaseModel):
     method: str
     schedule: str
 
+    class Config:
+        orm_mode = True
+
 
 class GoalCreate(GoalBase):
     iep_id: int

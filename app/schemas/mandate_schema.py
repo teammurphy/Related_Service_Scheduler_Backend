@@ -9,6 +9,9 @@ class MandateBase(BaseModel):
     frequency: int
     interval: int
 
+    class Config:
+        orm_mode = True
+
 
 class MandateCreate(MandateBase):
     iep_id: int
