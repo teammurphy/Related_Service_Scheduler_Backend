@@ -2,13 +2,13 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from .user_schema import UserResponse
+from .user_schema import UserThin
 
 
 class Token(BaseModel):
     access_token: str
     token_type: str
-    user: UserResponse
+    user: UserThin
 
 
 class TokenData(BaseModel):
