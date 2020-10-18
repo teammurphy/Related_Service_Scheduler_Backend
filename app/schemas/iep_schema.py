@@ -8,8 +8,8 @@ from .mandate_schema import Mandate
 
 
 class IepBase(BaseModel):
-    start_date: datetime
-    end_date: datetime
+    start_date: date
+    end_date: date
 
     class Config:
         orm_mode = True
