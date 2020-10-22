@@ -21,8 +21,25 @@ def get_all_students(db: Session):
     return db.query(models.Student).all()
 
 
-def get_student_by_caseload(db: Session, caseload_id: int):
+def get_students_id_by_caseload(db: Session, caseload_id: int):
+    return db.query(models.Student).join(models.Student.cases, aliased=True).filter_by(caseload_id=caseload_id).distinct(models.Student.id).all()
+
+
+def get_student_by_caseload_with_caseID(db: Session, caseload_id: int):
     return db.query(models.Student, models.Case.id).join(models.Student.cases, aliased=True).filter_by(caseload_id=caseload_id).distinct(models.Student.id).all()
+
+
+def get_students_by_caseload_with_mandates(db: Session, caseload_id: int):
+    result = []
+    students = get_students_id_by_caseload(db, caseload_id)
+    for student in students:
+        if student.ieps:
+            mandates = db.query(models.Mandate).filter_by(
+                iep_id=student.ieps.id).all()
+            result.append((student, mandates))
+        else:
+            result.append((student, []))
+    return result
 
 
 def create_student(db: Session, student: student_schema.StudentCreate):

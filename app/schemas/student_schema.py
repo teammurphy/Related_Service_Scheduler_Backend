@@ -4,6 +4,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 from .iep_schema import Iep
+from .mandate_schema import Mandate
 
 
 class StudentBase(BaseModel):
@@ -35,3 +36,9 @@ class StudentThin(StudentBase):
 class StudentWithFullName(StudentBase):
     id: int
     full_name: str
+
+
+class StudentMandates(StudentBase):
+    id: int
+    school_id: int
+    mandates: Optional[List[Mandate]] = []

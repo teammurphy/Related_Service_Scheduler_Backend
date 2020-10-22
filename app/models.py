@@ -49,7 +49,7 @@ class Student(Base):
     school_id = Column(Integer, ForeignKey('school.id'))
     school = relationship("School", back_populates="students")
 
-    ieps = relationship("Iep", back_populates="student")
+    ieps = relationship("Iep", uselist=False, back_populates="student")
 
     cases = relationship("Case", back_populates="student")
 

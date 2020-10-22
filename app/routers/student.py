@@ -30,7 +30,7 @@ def read_all_students(db: Session = Depends(get_db)):
 @router.get("/students/caseload/{caseload_id}", response_model=List[student_schema.StudentThin], tags=["student"])
 def read_students_by_caseload(caseload_id: int, db: Session = Depends(get_db)):
     result = []
-    li_tup_students_caseid = crud.student.get_student_by_caseload(
+    li_tup_students_caseid = crud.student.get_student_by_caseload_with_caseID(
         db, caseload_id)
 
     if not li_tup_students_caseid:
@@ -45,6 +45,22 @@ def read_students_by_caseload(caseload_id: int, db: Session = Depends(get_db)):
     return result
 
 
+@router.get("/students/mandates/caseload/{caseload_id}", response_model=List[student_schema.StudentMandates], tags=["student"])
+def read_students_with_mandates(caseload_id: int, db: Session = Depends(get_db)):
+
+    li_tup_students_and_mandates = crud.student.get_students_by_caseload_with_mandates(
+        db, caseload_id)
+
+    if not li_tup_students_and_mandates:
+        raise HTTPException(status_code=404, detail="Students not found")
+
+    def add_mandates_to_student(tup):
+        setattr(tup[0], 'mandates', tup[1])
+        return tup[0]
+
+    return list(map(add_mandates_to_student, li_tup_students_and_mandates))
+
+
 @router.get("/students/school/{school_id}", response_model=List[student_schema.StudentWithFullName], tags=["student"])
 def read_students_by_school(school_id: int, db: Session = Depends(get_db)):
 
@@ -56,9 +72,7 @@ def read_students_by_school(school_id: int, db: Session = Depends(get_db)):
         student_obj.full_name = f'{student_obj.first_name} {student_obj.last_name}'
         return student_obj
 
-    students = list(map(add_fullname, students))
-
-    return students
+    return list(map(add_fullname, students))
 
 
 @router.post("/student", tags=["student"])
