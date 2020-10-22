@@ -5,6 +5,8 @@ import models
 from schemas import student_schema
 from sqlalchemy.orm import Session
 
+from . import caseload
+
 
 def get_student(db: Session, student_id: int):
     return db.query(models.Student).filter(models.Student.id == student_id).first()
@@ -32,12 +34,13 @@ def get_student_by_caseload_with_caseID(db: Session, caseload_id: int):
 def get_students_by_caseload_with_mandates(db: Session, caseload_id: int):
     result = []
     students = get_students_id_by_caseload(db, caseload_id)
+    service = caseload.get_caseload(db, caseload_id).service
     if not students:
         return None
     for student in students:
         if student.ieps:
             mandates = db.query(models.Mandate).filter_by(
-                iep_id=student.ieps.id).all()
+                iep_id=student.ieps.id, service=service).all()
             result.append((student, mandates))
         else:
             result.append((student, []))
