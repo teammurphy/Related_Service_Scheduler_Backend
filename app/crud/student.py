@@ -32,6 +32,8 @@ def get_student_by_caseload_with_caseID(db: Session, caseload_id: int):
 def get_students_by_caseload_with_mandates(db: Session, caseload_id: int):
     result = []
     students = get_students_id_by_caseload(db, caseload_id)
+    if not students:
+        return None
     for student in students:
         if student.ieps:
             mandates = db.query(models.Mandate).filter_by(
