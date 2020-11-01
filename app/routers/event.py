@@ -24,3 +24,12 @@ def update_event(updated_event: event_schema.EventCreate, event_id: int, db: Ses
     if updated is False:
         raise HTTPException(status_code=404, detail="event not found")
     return event_id
+
+
+@router.get("/events", response_model=List[event_schema.Event], tags=['event'])
+def read_events(db: Session = Depends(get_db)):
+    events = crud.event.get_all_events(db)
+    logging.info(events[0].dtstart)
+    if events is None:
+        raise HTTPException(status_code=404, detail='No events')
+    return events

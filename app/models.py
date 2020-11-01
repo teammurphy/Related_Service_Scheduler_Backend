@@ -1,5 +1,6 @@
 from database import Base
-from sqlalchemy import Boolean, Column, Date, Enum, ForeignKey, Integer, String
+from sqlalchemy import (Boolean, Column, Date, DateTime, ForeignKey, Integer,
+                        String)
 from sqlalchemy.orm import relationship
 
 
@@ -165,7 +166,7 @@ class Event(Base):
     periodicity = Column(String)
     interval = Column(Integer)
 
-    dtstart = Column(Date)
+    dtstart = Column(DateTime)
     end_date = Column(Date)
 
     mandate_id = Column(Integer, ForeignKey('mandate.id'))

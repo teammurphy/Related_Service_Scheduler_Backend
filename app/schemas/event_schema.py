@@ -8,6 +8,9 @@ class EventBase(BaseModel):
     dtstart: datetime
     end_date: date
 
+    class Config:
+        orm_mode = True
+
 
 class EventCreate(EventBase):
     service: str
