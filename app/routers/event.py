@@ -29,7 +29,31 @@ def update_event(updated_event: event_schema.EventCreate, event_id: int, db: Ses
 @router.get("/events", response_model=List[event_schema.Event], tags=['event'])
 def read_events(db: Session = Depends(get_db)):
     events = crud.event.get_all_events(db)
-    logging.info(events[0].dtstart)
     if events is None:
+        raise HTTPException(status_code=404, detail='No events')
+    return events
+
+
+@router.get("/events/caseload/{caseload_id}", response_model=List[event_schema.Event], tags=['event'])
+def read_events_by_caseload_id(caseload_id: int, db: Session = Depends(get_db)):
+    events = crud.event.get_events_by_caseload_id(
+        db=db, caseload_id=caseload_id)
+    if not events:
+        raise HTTPException(status_code=404, detail='No events')
+    return events
+
+
+@router.get("/events/student/{student_id}", response_model=List[event_schema.Event], tags=['event'])
+def read_events_by_student_id(student_id: int, db: Session = Depends(get_db)):
+    events = crud.event.get_events_by_student_id(db=db, student_id=student_id)
+    if not events:
+        raise HTTPException(status_code=404, detail='No events')
+    return events
+
+
+@router.get("/events/school/{school_id}", response_model=List[event_schema.Event], tags=['event'])
+def read_events_by_school_id(school_id: int, db: Session = Depends(get_db)):
+    events = crud.event.get_events_by_school_id(db=db, school_id=school_id)
+    if not events:
         raise HTTPException(status_code=404, detail='No events')
     return events

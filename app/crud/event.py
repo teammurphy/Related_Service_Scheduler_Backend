@@ -16,6 +16,18 @@ def get_all_events(db: Session):
     return db.query(models.Event).all()
 
 
+def get_events_by_caseload_id(db: Session, caseload_id: int):
+    return db.query(models.Event).filter(models.Event.caseload_id == caseload_id).all()
+
+
+def get_events_by_student_id(db: Session, student_id: int):
+    return db.query(models.Event).filter(models.Event.student_id == student_id).all()
+
+
+def get_events_by_school_id(db: Session, school_id: int):
+    return db.query(models.Event).filter(models.Event.school_id == school_id).all()
+
+
 def create_event(db: Session, event: event_schema.EventCreate):
     db_event = models.Event()
     [setattr(db_event, i[0], i[1]) for i in event]
