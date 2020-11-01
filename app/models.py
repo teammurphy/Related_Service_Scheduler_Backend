@@ -34,6 +34,8 @@ class School(Base):
 
     students = relationship("Student", back_populates="school")
 
+    events = relationship("Event", back_populates='school')
+
 
 class Student(Base):
     __tablename__ = 'student'
@@ -52,6 +54,8 @@ class Student(Base):
     ieps = relationship("Iep", uselist=False, back_populates="student")
 
     cases = relationship("Case", back_populates="student")
+
+    events = relationship("Event", back_populates="student")
 
 
 class Iep(Base):
@@ -84,6 +88,8 @@ class Mandate(Base):
 
     iep_id = Column(Integer, ForeignKey('iep.id', ondelete="CASCADE"))
     iep = relationship("Iep", back_populates="mandates")
+
+    events = relationship('Event', back_populates='mandate')
 
 
 class Goal(Base):
@@ -131,6 +137,8 @@ class Caseload(Base):
 
     cases = relationship("Case", back_populates="caseload")
 
+    events = relationship("Event", back_populates="caseload")
+
 
 class Case(Base):
     __tablename__ = 'case'
@@ -143,3 +151,31 @@ class Case(Base):
 
     student_id = Column(Integer, ForeignKey('student.id', ondelete="CASCADE"))
     student = relationship("Student", back_populates="cases")
+
+
+class Event(Base):
+    __tablename__ = 'event'
+
+    id = Column(Integer, primary_key=True)
+
+    title = Column(String)
+    service = Column(String)
+    duration = Column(Integer)
+
+    periodicity = Column(String)
+    interval = Column(Integer)
+
+    dtstart = Column(Date)
+    end_date = Column(Date)
+
+    mandate_id = Column(Integer, ForeignKey('mandate.id'))
+    mandate = relationship("Mandate", back_populates="events")
+
+    student_id = Column(Integer, ForeignKey('student.id'))
+    student = relationship("Student", back_populates="events")
+
+    caseload_id = Column(Integer, ForeignKey('caseload.id'))
+    caseload = relationship("Caseload", back_populates='events')
+
+    school_id = Column(Integer, ForeignKey('school.id'))
+    school = relationship("School", back_populates="events")

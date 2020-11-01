@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from routers import (admin, auth, case, caseload, goal, iep, mandate,
+from routers import (admin, auth, case, caseload, event, goal, iep, mandate,
                      providers, roles, school, student, supervisors, users)
 from sqlalchemy.orm import Session
 
@@ -36,6 +36,7 @@ app.include_router(auth.router)
 app.include_router(admin.router)
 app.include_router(providers.router)
 app.include_router(supervisors.router)
+app.include_router(event.router)
 
 
 @lru_cache()
