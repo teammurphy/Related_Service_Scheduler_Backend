@@ -1,28 +1,27 @@
 from datetime import date, datetime
-
+from typing import Optional
 from pydantic import BaseModel
 
 
 class EventBase(BaseModel):
-    title: str
-    dtstart: datetime
-    end_date: date
+    title: Optional[str]
+    dtstart: Optional[datetime]
+    end_date: Optional[date]
 
     class Config:
         orm_mode = True
 
 
 class EventCreate(EventBase):
-    service: str
-    duration: int
-    periodicity: str
-    interval: int
+    service: Optional[str]
+    duration: Optional[int]
+    periodicity: Optional[str]
+    interval: Optional[int]
 
-    mandate_id: int
-    student_id: int
-    caseload_id: int
-    school_id: int
-
+    mandate_id: Optional[int]
+    student_id: Optional[int]
+    caseload_id: Optional[int]
+    school_id: Optional[int]
 
 class Event(EventCreate):
     id: int
