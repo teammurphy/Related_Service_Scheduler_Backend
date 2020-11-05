@@ -43,7 +43,7 @@ def delete_caseload(db: Session, caseload_id: int):
 
 
 def update_caseload(db: Session, caseload_id: int, updated_caseload: caseload_schema.CaseloadCreate):
-    check_caseload_inputs(caseload)
+    check_caseload_inputs(updated_caseload)
     db_caseload = get_caseload(db, caseload_id)
     if db_caseload is None:
         return False

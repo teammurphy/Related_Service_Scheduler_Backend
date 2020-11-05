@@ -33,13 +33,6 @@ def update_goal(db: Session, goal_id: int, updated_goal: goal_schema.GoalCreate)
     db_goal = get_goal(db, goal_id)
     if db_goal is None:
         return False
-    return update_object(db, db_goal, updated_goal)
-
-
-def update_goal(db: Session, goal_id: int, updated_goal: goal_schema.GoalCreate):
-    db_goal = get_goal(db, goal_id)
-    if db_goal is None:
-        return False
 
     [setattr(db_goal, i[0], i[1]) for i in updated_goal]
     db.commit()

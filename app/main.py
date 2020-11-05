@@ -1,6 +1,6 @@
-import logging
-from functools import lru_cache
 from typing import List
+from functools import lru_cache
+import logging
 
 import config
 import custom_exceptions

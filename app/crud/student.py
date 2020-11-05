@@ -19,7 +19,6 @@ def get_students_by_school_id(db: Session, school_id: int):
 
 def get_all_students(db: Session):
     # REVIEW: look into pagenation and limit fast api docs
-    logging.info(db.query(models.Student).all())
     return db.query(models.Student).all()
 
 

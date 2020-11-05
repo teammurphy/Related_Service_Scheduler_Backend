@@ -33,7 +33,7 @@ def delete_case(db: Session, case_id: int):
 
 
 def update_caseload(db: Session, case_id: int, updated_case: case_schema.CaseCreate):
-    db_case = get_caseload(db, case_id)
+    db_case = get_case(db, case_id)
     if db_case is None:
         return False
 
