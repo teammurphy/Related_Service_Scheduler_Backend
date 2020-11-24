@@ -42,4 +42,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            thesimpelkid/relatedService:latest
+            thesimpelkid/related-service:latest
