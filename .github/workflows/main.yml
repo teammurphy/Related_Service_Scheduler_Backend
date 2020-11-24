@@ -31,7 +31,7 @@ jobs:
         name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
-          name: teammurphs
+          name: thesimplekid
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
@@ -43,4 +43,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            teammurphs/relatedService
+            thesimpelkid/relatedService:latest
